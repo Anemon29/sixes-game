@@ -1,10 +1,8 @@
-package model;
+package pl.edu.agh.sixes.engine;
 
 import org.junit.Before;
 
-import static org.junit.Assert.*;
-
-public class BoardTest {
+public class MoveCheckerTest {
 
     @Before
     public void setUp() throws Exception {

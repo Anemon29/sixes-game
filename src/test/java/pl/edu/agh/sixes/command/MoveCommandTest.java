@@ -1,8 +1,6 @@
-package commands;
+package pl.edu.agh.sixes.command;
 
 import org.junit.Before;
-
-import static org.junit.Assert.*;
 
 public class MoveCommandTest {
 

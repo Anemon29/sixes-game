@@ -1,4 +1,4 @@
-package view;
+package pl.edu.agh.sixes;
 
 import javafx.stage.Stage;
 

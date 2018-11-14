@@ -1,10 +1,8 @@
-package engine;
+package pl.edu.agh.sixes.controller;
 
 import org.junit.Before;
 
-import static org.junit.Assert.*;
-
-public class MoveCheckerTest {
+public class BoardControllerTest {
 
     @Before
     public void setUp() throws Exception {

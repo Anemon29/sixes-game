@@ -1,8 +1,6 @@
-package model;
+package pl.edu.agh.sixes.model;
 
 import org.junit.Before;
-
-import static org.junit.Assert.*;
 
 public class DeckTest {
 
