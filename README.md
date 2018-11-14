@@ -1,4 +1,4 @@
-# Szustki
+# Sixes
 Project of card game with gui witch logic linked <a href="https://docs.google.com/document/d/1UzhqULwhB6ueXoEG-X2whsShD8lrHJ8TGXExa49ohVY/edit">here</a>
 
 ## Documentation
