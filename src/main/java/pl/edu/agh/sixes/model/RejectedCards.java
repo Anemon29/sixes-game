@@ -1,4 +1,4 @@
 package pl.edu.agh.sixes.model;
 
-public class RejectedCards {
+public class RejectedCards extends CardsContainer {
 }
