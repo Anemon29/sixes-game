@@ -15,6 +15,10 @@ public class Row {
 
     private Card.Suit suit;
 
+    public Row(List<Card> cardsRow, Card.Suit suit) {
+        this.cardsRow = cardsRow;
+    }
+
     public void bindSuit(Card card){
         if (suit == null){
             setSuit(card.getSuit());

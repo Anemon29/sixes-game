@@ -12,6 +12,14 @@ public class Board {
     private RejectedCards rejectedCards;
     private Trash trash;
 
+    public Board(ActiveCardRows rows, Deck deck, RejectedCards rejectedCards, Trash trash) {
+        this.rows = rows;
+        this.deck = deck;
+        this.rejectedCards = rejectedCards;
+        this.trash = trash;
+    }
 
-
+    public Board(Deck deck) {
+        this.deck = deck;
+    }
 }
