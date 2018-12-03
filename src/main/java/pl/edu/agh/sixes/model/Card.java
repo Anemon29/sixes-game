@@ -25,6 +25,9 @@ public class Card {
         this.suit = suit;
     }
 
+    public Card() {
+    }
+
     public Rank getRank() {
         return rank;
     }
@@ -32,4 +35,11 @@ public class Card {
     public Suit getSuit() {
         return suit;
     }
+
+    public Boolean isSameCard(Card other){
+        if (this.getSuit().equals(other.getSuit()) && this.getRank().equals(other.getRank()))
+            return Boolean.TRUE;
+        return Boolean.FALSE;
+    }
+
 }

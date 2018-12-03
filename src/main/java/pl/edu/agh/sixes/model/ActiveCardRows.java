@@ -14,4 +14,8 @@ public class ActiveCardRows {
     public ActiveCardRows(List<Row> rows) {
         this.rows = rows;
     }
+
+    public List<Row> getRows() {
+        return rows;
+    }
 }
