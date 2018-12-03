@@ -17,4 +17,15 @@ public abstract class CardsContainer {
         cards.add(card);
     }
 
+    public CardsContainer() {
+        this.cards = new LinkedList<>();
+    }
+
+    public CardsContainer(LinkedList<Card> cards) {
+        this.cards = cards;
+    }
+
+    public LinkedList<Card> getCards() {
+        return cards;
+    }
 }

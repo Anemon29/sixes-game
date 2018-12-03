@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -13,18 +14,30 @@ public class Row {
 
     private List<Card> cardsRow;
 
-    private Card.Suit suit;
+    private Optional<Card.Suit> suit;
 
-    public Row(List<Card> cardsRow, Card.Suit suit) {
+    public Row(List<Card> cardsRow) {
         this.cardsRow = cardsRow;
+        this.suit = Optional.empty();
+    }
+
+    public Optional<Card.Suit> getSuit() {
+        return suit;
+    }
+
+    public List<Card> getCardsRow() {
+        return cardsRow;
+    }
+
+    public void setSuit(Optional<Card.Suit> suit) {
+        this.suit = suit;
     }
 
     public void bindSuit(Card card){
-        if (suit == null){
-            setSuit(card.getSuit());
-            return;
+        if (suit.isPresent()){
+            throw new IllegalStateException("Suit already binded");
         }
-        throw new IllegalStateException("Suit already binded");
+        setSuit(Optional.of(card.getSuit()));
     }
 
     public void move(Card card, Integer index){

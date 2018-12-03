@@ -22,4 +22,22 @@ public class Board {
     public Board(Deck deck) {
         this.deck = deck;
     }
+
+    public ActiveCardRows getRows() {
+        return rows;
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public RejectedCards getRejectedCards() {
+        return rejectedCards;
+    }
+
+    public Trash getTrash() {
+        return trash;
+    }
+
+
 }
