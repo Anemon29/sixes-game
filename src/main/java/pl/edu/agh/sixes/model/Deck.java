@@ -7,4 +7,7 @@ public class Deck extends CardsContainer{
     public Deck(LinkedList<Card> cards) {
         super(cards);
     }
+
+    public Deck() {
+    }
 }
