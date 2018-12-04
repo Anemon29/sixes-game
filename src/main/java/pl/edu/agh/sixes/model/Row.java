@@ -1,15 +1,9 @@
 package pl.edu.agh.sixes.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 import java.util.Optional;
 
-@Getter
-@Setter
-@EqualsAndHashCode
+
 public class Row {
 
     private List<Card> cardsRow;

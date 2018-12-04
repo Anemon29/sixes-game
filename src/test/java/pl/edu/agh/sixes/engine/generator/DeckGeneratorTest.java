@@ -1,6 +1,5 @@
 package pl.edu.agh.sixes.engine.generator;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.edu.agh.sixes.model.Card;
@@ -43,7 +42,7 @@ class DeckGeneratorTest {
 
             int count = 0;
             for(Card card : deck.getCards()){
-                if (chosen.isSameCard(card))
+                if (chosen.equals(card))
                     count++;
             }
             assertEquals(2, count);

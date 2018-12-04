@@ -1,12 +1,6 @@
 package pl.edu.agh.sixes.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-@EqualsAndHashCode
 public class Card {
 
     private Rank rank;
@@ -36,7 +30,7 @@ public class Card {
         return suit;
     }
 
-    public Boolean isSameCard(Card other){
+    public Boolean equals(Card other){
         if (this.getSuit().equals(other.getSuit()) && this.getRank().equals(other.getRank()))
             return Boolean.TRUE;
         return Boolean.FALSE;
