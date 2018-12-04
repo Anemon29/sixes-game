@@ -1,25 +1,26 @@
 package pl.edu.agh.sixes.model;
 
-import java.util.LinkedList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 
 public abstract class CardsContainer {
 
-    private LinkedList<Card> cards;
+    private ObservableList<Card> cards;
 
-    public void addCard(Card card){
-        cards.add(card);
-    }
-
-    public CardsContainer() {
-        this.cards = new LinkedList<>();
-    }
-
-    public CardsContainer(LinkedList<Card> cards) {
+    public CardsContainer(ObservableList<Card> cards) {
         this.cards = cards;
     }
 
-    public LinkedList<Card> getCards() {
+    public CardsContainer() {
+        this.cards = FXCollections.observableArrayList();
+    }
+
+    public ObservableList<Card> getCards() {
         return cards;
+    }
+
+    public void addCard(Card card){
+        this.cards.add(card);
     }
 }

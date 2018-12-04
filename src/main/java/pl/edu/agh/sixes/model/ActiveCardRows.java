@@ -1,19 +1,19 @@
 package pl.edu.agh.sixes.model;
 
-import java.util.List;
+import javafx.collections.ObservableList;
 
 public class ActiveCardRows {
 
-    private List<Row> rows;
+    private ObservableList<Row> rows;
 
-    public ActiveCardRows(List<Row> rows) {
+    public ActiveCardRows(ObservableList<Row> rows) {
         this.rows = rows;
     }
 
     public ActiveCardRows() {
     }
 
-    public List<Row> getRows() {
+    public ObservableList<Row> getRows() {
         return rows;
     }
 }

@@ -1,13 +1,14 @@
 package pl.edu.agh.sixes.model;
 
-import java.util.LinkedList;
+import javafx.collections.ObservableList;
 
 public class Deck extends CardsContainer{
 
-    public Deck(LinkedList<Card> cards) {
+    public Deck(ObservableList<Card> cards) {
         super(cards);
     }
 
     public Deck() {
+        super();
     }
 }

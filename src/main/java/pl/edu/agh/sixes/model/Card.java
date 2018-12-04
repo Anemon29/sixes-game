@@ -30,10 +30,12 @@ public class Card {
         return suit;
     }
 
-    public Boolean equals(Card other){
-        if (this.getSuit().equals(other.getSuit()) && this.getRank().equals(other.getRank()))
-            return Boolean.TRUE;
-        return Boolean.FALSE;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return rank == card.rank &&
+                suit == card.suit;
     }
-
 }

@@ -1,5 +1,7 @@
 package pl.edu.agh.sixes.engine.generator;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -8,12 +10,8 @@ import pl.edu.agh.sixes.model.ActiveCardRows;
 import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.Deck;
 
-import java.util.LinkedList;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 class RowsGeneratorTest {
 
@@ -30,7 +28,7 @@ class RowsGeneratorTest {
     @Test
     void initializeRowsTest() {
         //given
-        LinkedList<Card> cards = new LinkedList<>();
+        ObservableList<Card> cards = FXCollections.observableArrayList();
         for (int i = 0; i < 104; i++) {
             cards.add(new Card());
         }

@@ -1,16 +1,17 @@
 package pl.edu.agh.sixes.model;
 
-import java.util.List;
+import javafx.collections.ObservableList;
+
 import java.util.Optional;
 
 
 public class Row {
 
-    private List<Card> cardsRow;
+    private ObservableList<Card> cardsRow;
 
     private Optional<Card.Suit> suit;
 
-    public Row(List<Card> cardsRow) {
+    public Row(ObservableList<Card> cardsRow) {
         this.cardsRow = cardsRow;
         this.suit = Optional.empty();
     }
@@ -19,7 +20,7 @@ public class Row {
         return suit;
     }
 
-    public List<Card> getCardsRow() {
+    public ObservableList<Card> getCardsRow() {
         return cardsRow;
     }
 
@@ -34,7 +35,7 @@ public class Row {
         setSuit(Optional.of(card.getSuit()));
     }
 
-    public void move(Card card, Integer index){
+    public void moveCardIntoRowIndex(Card card, Integer index){
         cardsRow.add(index, card);
     }
 
