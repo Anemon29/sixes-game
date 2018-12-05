@@ -28,6 +28,8 @@ jar {
 
 dependencies {
     compile 'com.google.guava:guava:23.0'
+    compile 'org.mockito:mockito-core:2.20.1'
+    compile 'org.projectlombok:lombok:1.16.16'
     testCompile(
             'org.junit.jupiter:junit-jupiter-api:5.1.0'
     )
@@ -36,5 +38,4 @@ dependencies {
             'org.junit.platform:junit-platform-launcher:1.1.0',
             'org.junit.platform:junit-platform-runner:1.1.0'
     )
-    compile "org.projectlombok:lombok:1.16.16"
 }
