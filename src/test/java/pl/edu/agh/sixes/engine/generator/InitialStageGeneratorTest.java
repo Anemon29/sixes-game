@@ -1,10 +1,10 @@
 package pl.edu.agh.sixes.engine.generator;
 
+import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import pl.edu.agh.sixes.model.ActiveCardRows;
 import pl.edu.agh.sixes.model.Deck;
 
 import static org.mockito.Mockito.times;
@@ -30,7 +30,7 @@ class InitialStageGeneratorTest {
         //given
         Deck deck = new Deck();
         when(deckGenerator.initializeDeck()).thenReturn(deck);
-        when(rowsGenerator.initializeRows(deck)).thenReturn(new ActiveCardRows());
+        when(rowsGenerator.initializeRows(deck)).thenReturn(Lists.newArrayList());
 
         //when
         initialStageGenerator.initializeBoard();

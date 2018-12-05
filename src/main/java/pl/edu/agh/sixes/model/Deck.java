@@ -1,14 +1,21 @@
 package pl.edu.agh.sixes.model;
 
-import javafx.collections.ObservableList;
 
-public class Deck extends CardsContainer{
+import java.util.List;
 
-    public Deck(ObservableList<Card> cards) {
+public class Deck extends CardsStack {
+
+    public Deck(List<Card> cards) {
         super(cards);
     }
 
     public Deck() {
         super();
     }
+
+    @Override
+    public void push(Card card) {
+        throw new UnsupportedOperationException("Putting card into deck is forbidden.");
+    }
+
 }
