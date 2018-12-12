@@ -1,25 +1,27 @@
 package pl.edu.agh.sixes.engine.generator;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import pl.edu.agh.sixes.model.ActiveCardRows;
+import com.google.common.collect.Lists;
 import pl.edu.agh.sixes.model.Card;
-import pl.edu.agh.sixes.model.Deck;
+import pl.edu.agh.sixes.model.CardContainer;
+import pl.edu.agh.sixes.model.stack.Deck;
 import pl.edu.agh.sixes.model.Row;
+
+import java.util.List;
 
 public class RowsGenerator {
 
-    public ActiveCardRows initializeRows(Deck deck){
-        ObservableList<Row> rowList = FXCollections.observableArrayList();
-        ObservableList<Card> deckCards = deck.getCards();
+    public List<Row> initializeRows(Deck deck){
+        List<Row> rowList = Lists.newLinkedList();
+        List<Card> deckCards = deck.getCards();
         for (int i = 0; i < 4; i++) {
-            ObservableList<Card> row = FXCollections.observableArrayList();
+            List<CardContainer> row = Lists.newLinkedList();
             for (int j = 0; j < 8; j++) {
                 Card top = deckCards.remove(deckCards.size() - 1);
-                row.add(top);
+                CardContainer container = new CardContainer(CardContainer.Place.Field, new CardContainer.Coordinates(i, j), top);
+                row.add(container);
             }
             rowList.add(new Row(row));
         }
-        return new ActiveCardRows(rowList);
+        return rowList;
     }
 }
