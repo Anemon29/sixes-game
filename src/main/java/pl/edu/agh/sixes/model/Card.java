@@ -1,6 +1,8 @@
 package pl.edu.agh.sixes.model;
 
 
+import java.util.Objects;
+
 public class Card {
 
     private Rank rank;
@@ -15,11 +17,10 @@ public class Card {
     }
 
     public Card(Rank rank, Suit suit) {
+        Objects.requireNonNull(rank, "Card.Rank cannot be null.");
+        Objects.requireNonNull(suit, "Card.Suit cannot be null.");
         this.rank = rank;
         this.suit = suit;
-    }
-
-    public Card() {
     }
 
     public Rank getRank() {

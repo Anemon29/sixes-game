@@ -1,10 +1,10 @@
 package pl.edu.agh.sixes.engine.generator;
 
 import pl.edu.agh.sixes.model.Board;
-import pl.edu.agh.sixes.model.Deck;
-import pl.edu.agh.sixes.model.RejectedCards;
+import pl.edu.agh.sixes.model.stack.Deck;
+import pl.edu.agh.sixes.model.stack.RejectedCards;
 import pl.edu.agh.sixes.model.Row;
-import pl.edu.agh.sixes.model.Trash;
+import pl.edu.agh.sixes.model.stack.Trash;
 
 import java.util.List;
 

@@ -2,6 +2,9 @@ package pl.edu.agh.sixes.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import pl.edu.agh.sixes.model.stack.Deck;
+import pl.edu.agh.sixes.model.stack.RejectedCards;
+import pl.edu.agh.sixes.model.stack.Trash;
 
 import java.util.List;
 

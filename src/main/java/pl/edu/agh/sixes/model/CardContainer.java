@@ -49,6 +49,12 @@ public class CardContainer {
                 return null;
             }
         },
+        Trash {
+            @Override
+            public Coordinates getCoordinates(int rowId, int columnId) {
+                return null;
+            }
+        },
         Field {
             @Override
             public Coordinates getCoordinates(int rowId, int columnId) {

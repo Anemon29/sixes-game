@@ -1,9 +1,11 @@
-package pl.edu.agh.sixes.model;
+package pl.edu.agh.sixes.model.stack;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import pl.edu.agh.sixes.model.Card;
+import pl.edu.agh.sixes.model.CardContainer;
 
 import java.util.List;
 
@@ -28,20 +30,17 @@ public abstract class CardsStack {
         this.container = new SimpleObjectProperty<>(container);
     }
 
-    protected CardsStack(List<Card> cards) {
-        this.cards = FXCollections.observableArrayList(cards);
-        this.numberOfCards = cards.size();
-    }
-
-    protected CardsStack() {
+    protected CardsStack(CardContainer.Place place) {
         this.cards = FXCollections.observableArrayList();
         this.numberOfCards = 0;
+        CardContainer container = new CardContainer(place, 0, 0);
+        this.container = new SimpleObjectProperty<>(container);
     }
 
     public void push(Card card){
         this.cards.add(numberOfCards, card);
         numberOfCards++;
-        getContainer().setContent(card);
+        setContainerContent(card);
     }
 
     public Card peek() {
@@ -53,8 +52,12 @@ public abstract class CardsStack {
 
     public Card pop() {
         numberOfCards--;
-        getContainer().setContent(peek());
+        setContainerContent(peek());
         return this.cards.remove(numberOfCards);
+    }
+
+    public boolean isEmpty() {
+        return numberOfCards < 1;
     }
 
     public List<Card> getCards() {
@@ -66,10 +69,14 @@ public abstract class CardsStack {
     }
 
     public CardContainer getContainer() {
-        return container.get();
+        return container.getValue();
     }
 
-    public ObjectProperty<CardContainer> containerProperty() {
+    public ObjectProperty<CardContainer> getContainerProperty() {
         return container;
+    }
+
+    private void setContainerContent(Card card) {
+        getContainer().setContent(card);
     }
 }

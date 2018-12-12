@@ -3,7 +3,7 @@ package pl.edu.agh.sixes.engine.generator;
 import com.google.common.collect.Lists;
 import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.CardContainer;
-import pl.edu.agh.sixes.model.Deck;
+import pl.edu.agh.sixes.model.stack.Deck;
 import pl.edu.agh.sixes.model.Row;
 
 import java.util.List;

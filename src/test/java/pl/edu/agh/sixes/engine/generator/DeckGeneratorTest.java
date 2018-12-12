@@ -3,7 +3,7 @@ package pl.edu.agh.sixes.engine.generator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.edu.agh.sixes.model.Card;
-import pl.edu.agh.sixes.model.Deck;
+import pl.edu.agh.sixes.model.stack.Deck;
 
 import java.util.Random;
 

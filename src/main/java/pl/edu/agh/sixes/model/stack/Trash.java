@@ -1,9 +1,12 @@
-package pl.edu.agh.sixes.model;
+package pl.edu.agh.sixes.model.stack;
+
+import pl.edu.agh.sixes.model.Card;
+import pl.edu.agh.sixes.model.CardContainer;
 
 public class Trash extends CardsStack {
 
     public Trash() {
-        super();
+        super(CardContainer.Place.Trash);
     }
 
     @Override

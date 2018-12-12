@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.edu.agh.sixes.model.Card;
-import pl.edu.agh.sixes.model.Deck;
+import pl.edu.agh.sixes.model.stack.Deck;
 import pl.edu.agh.sixes.model.Row;
 
 import java.util.List;
@@ -31,7 +31,7 @@ class RowsGeneratorTest {
         //given
         List<Card> cards = Lists.newLinkedList();
         for (int i = 0; i < 104; i++) {
-            cards.add(new Card());
+            cards.add(new Card(Card.Rank.ACE, Card.Suit.HEARTS));
         }
 
         when(deck.getCards()).thenReturn(cards);
