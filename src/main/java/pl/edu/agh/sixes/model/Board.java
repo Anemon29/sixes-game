@@ -22,10 +22,6 @@ public class Board {
         this.trash = new SimpleObjectProperty<>(trash);
     }
 
-    public Board(Deck deck) {
-        this.deck = new SimpleObjectProperty<>(deck);
-    }
-
     public List<Row> getRows() {
         return rows;
     }

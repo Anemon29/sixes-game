@@ -11,9 +11,4 @@ public class Deck extends CardsStack {
         super(cards, CardContainer.Place.Deck);
     }
 
-    @Override
-    public void push(Card card) {
-        throw new UnsupportedOperationException("Putting card into deck is forbidden.");
-    }
-
 }
