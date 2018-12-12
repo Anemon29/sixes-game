@@ -5,17 +5,18 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import pl.edu.agh.sixes.command.CommandRegistry;
-import pl.edu.agh.sixes.model.ActiveCardRows;
 import pl.edu.agh.sixes.model.Board;
-import pl.edu.agh.sixes.model.Card;
+import pl.edu.agh.sixes.model.CardContainer;
 import pl.edu.agh.sixes.model.Row;
+
+import java.util.List;
 
 public class BoardController {
 
@@ -23,36 +24,36 @@ public class BoardController {
 
     private CommandRegistry commandRegistry;
 
+    private CardContainer cardContainer;
+
     @FXML
     private GridPane boardGrid;
+    @FXML
+    private GridPane rowsGrid;
 
     @FXML
     private void initialize() {
 
-        boardGrid.setStyle("-fx-alignment: center");
+        rowsGrid.setStyle("-fx-alignment: center");
         for (int i = 0; i < 4; i++) {
             GridPane emptySlots = createRow();
             for (int j = 0; j < 8; j++) {
                 emptySlots.add(new Rectangle(80, 122), j, 0);
             }
-            boardGrid.add(emptySlots, 1, i);
+            rowsGrid.add(emptySlots, 0, i);
         }
-//        boardGrid.add();
-
     }
 
     public void setBoard(Board board) {
-        ActiveCardRows activeCardRows = board.getRows();
-        ObservableList<Row> rows = activeCardRows.getRows();
+        List<Row> rows = board.getRows();
         for (int i = 0; i < 4; i++) {
-            ObservableList<Card> row = rows.get(i).getCardsRow();
-            GridPane gridPane = (GridPane) boardGrid.getChildren().get(i);
+            ObservableList<CardContainer> row = rows.get(i).getObservableCardsRow();
+            GridPane gridPane = (GridPane) rowsGrid.getChildren().get(i);
             int j = 0;
-            for (Card c : row) {
+            for (CardContainer c : row) {
                 gridPane.add(createCard(c), j, 0);
                 j++;
             }
-//            boardGrid.add(gridPane, 1, i);
         }
     }
 
@@ -75,8 +76,8 @@ public class BoardController {
         return emptySlots;
     }
 
-    private ImageView createCard(Card card) {
-        ImageView cardImage = new ImageView(new Image(getClass().getResourceAsStream("/cards/PNG/" + card.toString() + ".png")));
+    private ImageView createCard(CardContainer cardContainer) {
+        ImageView cardImage = new ImageView(cardContainer.getCardImage());
         cardImage.setFitHeight(120);
 //        cardImage.fitHeightProperty().bind(heightProperty());
 
@@ -84,6 +85,9 @@ public class BoardController {
         cardImage.setSmooth(true);
         cardImage.setPickOnBounds(true);
         DropShadow shadow = new DropShadow();
+        DropShadow highlightShadow = new DropShadow();
+        highlightShadow.setColor(Color.color(1, 0, 0));
+        highlightShadow.setRadius(5.0);
 //Adding the shadow when the mouse cursor is on
         cardImage.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 e -> cardImage.setEffect(shadow));
@@ -91,7 +95,9 @@ public class BoardController {
         cardImage.addEventHandler(MouseEvent.MOUSE_EXITED,
                 e -> cardImage.setEffect(null));
 
-        cardImage.setOnMouseClicked((MouseEvent e) -> System.out.println("Card was clicked"));
+        cardImage.setOnMouseClicked((MouseEvent e) ->{
+            System.out.println(cardContainer.toString());
+        });
         return cardImage;
     }
 

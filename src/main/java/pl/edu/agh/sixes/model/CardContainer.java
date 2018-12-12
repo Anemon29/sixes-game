@@ -1,5 +1,7 @@
 package pl.edu.agh.sixes.model;
 
+import javafx.scene.image.Image;
+
 import java.util.Optional;
 
 public class CardContainer {
@@ -20,11 +22,20 @@ public class CardContainer {
         this.content = Optional.empty();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !coordinates.isPresent() || getClass() != o.getClass()) return false;
+        Coordinates coordinates = (Coordinates) o;
+        return this.coordinates.get().rowId == coordinates.rowId &&
+                this.coordinates.get().columnId == coordinates.columnId;
+    }
+
     public Place getPlace() {
         return place;
     }
 
-    public Optional<Coordinates >getCoordinates() {
+    public Optional<Coordinates> getCoordinates() {
         return coordinates;
     }
 
@@ -34,6 +45,13 @@ public class CardContainer {
 
     public void setContent(Card card) {
         this.content = Optional.ofNullable(card);
+    }
+
+    public Image getCardImage() {
+        if (content.isPresent()) {
+            return new Image(getClass().getResourceAsStream("/cards/PNG/" + content.get().toString() + ".png"));
+        }
+        return null;
     }
 
     public enum Place {
@@ -58,6 +76,12 @@ public class CardContainer {
             this.columnId = columnId;
         }
 
+        @Override
+        public String toString() {
+            return String.format("(%d, %d)", rowId, columnId);
+        }
+
+
         public int getRowId() {
             return rowId;
         }
@@ -67,5 +91,11 @@ public class CardContainer {
         }
 
     }
+
+    @Override
+    public String toString() {
+        return place.toString() + ":" + coordinates.toString() + " " + content.toString();
+    }
+
 
 }
