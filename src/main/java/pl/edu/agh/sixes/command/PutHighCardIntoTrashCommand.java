@@ -29,6 +29,7 @@ public class PutHighCardIntoTrashCommand implements Command {
                     throw new IllegalStateException("Can't push empty fields for now.");
                 }
                 card = first.getContent().get();
+                first.setContent(null);
                 break;
             default:
                 throw new IllegalArgumentException("Place must be: Deck or Rejected or Field.");

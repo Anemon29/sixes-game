@@ -1,6 +1,7 @@
 package pl.edu.agh.sixes.controller;
 
 
+import javafx.beans.binding.Binding;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
@@ -11,7 +12,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import pl.edu.agh.sixes.command.Command;
 import pl.edu.agh.sixes.command.CommandRegistry;
+import pl.edu.agh.sixes.command.builder.CommandBuilder;
 import pl.edu.agh.sixes.model.Board;
 import pl.edu.agh.sixes.model.CardContainer;
 import pl.edu.agh.sixes.model.Row;
@@ -25,6 +28,8 @@ public class BoardController {
     private CommandRegistry commandRegistry;
 
     private CardContainer cardContainer;
+
+    private Board board;
 
     @FXML
     private GridPane boardGrid;
@@ -45,6 +50,7 @@ public class BoardController {
     }
 
     public void setBoard(Board board) {
+        this.board = board;
         List<Row> rows = board.getRows();
         for (int i = 0; i < 4; i++) {
             ObservableList<CardContainer> row = rows.get(i).getObservableCardsRow();
@@ -76,6 +82,11 @@ public class BoardController {
         return emptySlots;
     }
 
+    private void handelClick(CardContainer cardContainer) {
+        Command command = new CommandBuilder(board, cardContainer).build();
+        this.commandRegistry.executeCommand(command);
+    }
+
     private ImageView createCard(CardContainer cardContainer) {
         ImageView cardImage = new ImageView(cardContainer.getCardImage());
         cardImage.setFitHeight(120);
@@ -95,7 +106,8 @@ public class BoardController {
         cardImage.addEventHandler(MouseEvent.MOUSE_EXITED,
                 e -> cardImage.setEffect(null));
 
-        cardImage.setOnMouseClicked((MouseEvent e) ->{
+        cardImage.setOnMouseClicked((MouseEvent e) -> {
+            handelClick(cardContainer);
             System.out.println(cardContainer.toString());
         });
         return cardImage;

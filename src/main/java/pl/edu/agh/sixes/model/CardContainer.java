@@ -1,5 +1,7 @@
 package pl.edu.agh.sixes.model;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
 import java.util.Optional;
@@ -8,18 +10,18 @@ public class CardContainer {
 
     private final Place place;
     private final Optional<Coordinates> coordinates;
-    private Optional<Card> content;
+    private ObjectProperty<Optional<Card>> content;
 
     public CardContainer(Place place, Coordinates coordinates, Card card) {
         this.place = place;
         this.coordinates = Optional.ofNullable(coordinates);
-        this.content = Optional.of(card);
+        this.content = new SimpleObjectProperty<>(Optional.of(card));
     }
 
     public CardContainer(Place place, Coordinates coordinates) {
         this.place = place;
         this.coordinates = Optional.ofNullable(coordinates);
-        this.content = Optional.empty();
+        this.content = new SimpleObjectProperty<>(Optional.empty());
     }
 
     @Override
@@ -40,16 +42,21 @@ public class CardContainer {
     }
 
     public Optional<Card> getContent() {
+        return content.getValue();
+    }
+
+    public ObjectProperty<Optional<Card>> getContentProperty() {
         return content;
     }
 
     public void setContent(Card card) {
-        this.content = Optional.ofNullable(card);
+        this.content.set(Optional.ofNullable(card));
     }
 
     public Image getCardImage() {
-        if (content.isPresent()) {
-            return new Image(getClass().getResourceAsStream("/cards/PNG/" + content.get().toString() + ".png"));
+//        System.out.println(getContent());
+        if (getContent().isPresent()) {
+            return new Image(getClass().getResourceAsStream("/cards/PNG/" + getContent().get().toString() + ".png"));
         }
         return null;
     }
