@@ -23,9 +23,9 @@ public abstract class CardsStack {
         this.numberOfCards = cards.size();
         CardContainer container;
         if (numberOfCards > 0) {
-            container = new CardContainer(place, 0, 0, cards.get(numberOfCards - 1));
+            container = new CardContainer(place, null, cards.get(numberOfCards - 1));
         } else {
-            container = new CardContainer(place, 0, 0);
+            container = new CardContainer(place, null);
         }
         this.container = new SimpleObjectProperty<>(container);
     }
@@ -33,7 +33,7 @@ public abstract class CardsStack {
     protected CardsStack(CardContainer.Place place) {
         this.cards = FXCollections.observableArrayList();
         this.numberOfCards = 0;
-        CardContainer container = new CardContainer(place, 0, 0);
+        CardContainer container = new CardContainer(place, null);
         this.container = new SimpleObjectProperty<>(container);
     }
 

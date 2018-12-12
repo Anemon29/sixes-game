@@ -5,18 +5,18 @@ import java.util.Optional;
 public class CardContainer {
 
     private final Place place;
-    private final Coordinates coordinates;
+    private final Optional<Coordinates> coordinates;
     private Optional<Card> content;
 
-    public CardContainer(Place place, int rowId, int columnId, Card card) {
+    public CardContainer(Place place, Coordinates coordinates, Card card) {
         this.place = place;
-        this.coordinates = place.getCoordinates(rowId, columnId);
+        this.coordinates = Optional.ofNullable(coordinates);
         this.content = Optional.of(card);
     }
 
-    public CardContainer(Place place, int rowId, int columnId) {
+    public CardContainer(Place place, Coordinates coordinates) {
         this.place = place;
-        this.coordinates = place.getCoordinates(rowId, columnId);
+        this.coordinates = Optional.ofNullable(coordinates);
         this.content = Optional.empty();
     }
 
@@ -24,7 +24,7 @@ public class CardContainer {
         return place;
     }
 
-    public Coordinates getCoordinates() {
+    public Optional<Coordinates >getCoordinates() {
         return coordinates;
     }
 
@@ -37,32 +37,9 @@ public class CardContainer {
     }
 
     public enum Place {
-        Deck {
-            @Override
-            public Coordinates getCoordinates(int rowId, int columnId) {
-                return null;
-            }
-        },
-        Rejected {
-            @Override
-            public Coordinates getCoordinates(int rowId, int columnId) {
-                return null;
-            }
-        },
-        Trash {
-            @Override
-            public Coordinates getCoordinates(int rowId, int columnId) {
-                return null;
-            }
-        },
-        Field {
-            @Override
-            public Coordinates getCoordinates(int rowId, int columnId) {
-                return new Coordinates(rowId, columnId);
-            }
-        };
-
-        public abstract Coordinates getCoordinates(int rowId, int columnId);
+        Deck,
+        Rejected,
+        Field
     }
 
     public static class Coordinates {

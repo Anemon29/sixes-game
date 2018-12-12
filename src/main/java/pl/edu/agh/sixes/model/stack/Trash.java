@@ -6,7 +6,7 @@ import pl.edu.agh.sixes.model.CardContainer;
 public class Trash extends CardsStack {
 
     public Trash() {
-        super(CardContainer.Place.Trash);
+        super(null);
     }
 
     @Override

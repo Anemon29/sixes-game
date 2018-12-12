@@ -17,7 +17,7 @@ public class RowsGenerator {
             List<CardContainer> row = Lists.newLinkedList();
             for (int j = 0; j < 8; j++) {
                 Card top = deckCards.remove(deckCards.size() - 1);
-                CardContainer container = new CardContainer(CardContainer.Place.Field, i, j, top);
+                CardContainer container = new CardContainer(CardContainer.Place.Field, new CardContainer.Coordinates(i, j), top);
                 row.add(container);
             }
             rowList.add(new Row(row));
