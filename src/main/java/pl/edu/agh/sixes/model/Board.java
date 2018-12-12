@@ -2,16 +2,21 @@ package pl.edu.agh.sixes.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import pl.edu.agh.sixes.model.stack.Deck;
+import pl.edu.agh.sixes.model.stack.RejectedCards;
+import pl.edu.agh.sixes.model.stack.Trash;
+
+import java.util.List;
 
 public class Board {
 
-    private ObjectProperty<ActiveCardRows> rows;
+    private List<Row> rows;
     private ObjectProperty<Deck> deck;
     private ObjectProperty<RejectedCards> rejectedCards;
     private ObjectProperty<Trash> trash;
 
-    public Board(ActiveCardRows rows, Deck deck, RejectedCards rejectedCards, Trash trash) {
-        this.rows = new SimpleObjectProperty<>(rows);
+    public Board(List<Row> rows, Deck deck, RejectedCards rejectedCards, Trash trash) {
+        this.rows = rows;
         this.deck = new SimpleObjectProperty<>(deck);
         this.rejectedCards = new SimpleObjectProperty<>(rejectedCards);
         this.trash = new SimpleObjectProperty<>(trash);
@@ -21,8 +26,8 @@ public class Board {
         this.deck = new SimpleObjectProperty<>(deck);
     }
 
-    public ActiveCardRows getRows() {
-        return rows.get();
+    public List<Row> getRows() {
+        return rows;
     }
 
     public Deck getDeck() {
@@ -35,10 +40,6 @@ public class Board {
 
     public Trash getTrash() {
         return trash.get();
-    }
-
-    public ObjectProperty<ActiveCardRows> getRowsProperty() {
-        return rows;
     }
 
     public ObjectProperty<Deck> getDeckProperty() {

@@ -1,18 +1,20 @@
 package pl.edu.agh.sixes.model;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.List;
 import java.util.Optional;
 
 
 public class Row {
 
-    private ObservableList<Card> cardsRow;
+    private ObservableList<CardContainer> cardsRow;
 
     private Optional<Card.Suit> suit;
 
-    public Row(ObservableList<Card> cardsRow) {
-        this.cardsRow = cardsRow;
+    public Row(List<CardContainer> cardsRow) {
+        this.cardsRow = FXCollections.observableArrayList(cardsRow);
         this.suit = Optional.empty();
     }
 
@@ -20,23 +22,19 @@ public class Row {
         return suit;
     }
 
-    public ObservableList<Card> getCardsRow() {
+    public List<CardContainer> getCardsRow() {
         return cardsRow;
     }
 
-    public void setSuit(Optional<Card.Suit> suit) {
-        this.suit = suit;
+    public ObservableList<CardContainer> getObservableCardsRow() {
+        return cardsRow;
     }
 
     public void bindSuit(Card card){
         if (suit.isPresent()){
             throw new IllegalStateException("Suit already binded");
         }
-        setSuit(Optional.of(card.getSuit()));
-    }
-
-    public void moveCardIntoRowIndex(Card card, Integer index){
-        cardsRow.add(index, card);
+        this.suit = Optional.of(card.getSuit());
     }
 
 }

@@ -1,6 +1,12 @@
 package pl.edu.agh.sixes.engine.generator;
 
-import pl.edu.agh.sixes.model.*;
+import pl.edu.agh.sixes.model.Board;
+import pl.edu.agh.sixes.model.stack.Deck;
+import pl.edu.agh.sixes.model.stack.RejectedCards;
+import pl.edu.agh.sixes.model.Row;
+import pl.edu.agh.sixes.model.stack.Trash;
+
+import java.util.List;
 
 public class InitialStageGenerator {
 
@@ -14,12 +20,11 @@ public class InitialStageGenerator {
 
     public Board initializeBoard(){
         Deck deck = deckGenerator.initializeDeck();
-        ActiveCardRows rows = rowsGenerator.initializeRows(deck);
+        List<Row> rows = rowsGenerator.initializeRows(deck);
         RejectedCards rejectedCards = new RejectedCards();
         Trash trash = new Trash();
-        Board board = new Board(rows, deck, rejectedCards, trash);
 
-        return board;
+        return new Board(rows, deck, rejectedCards, trash);
     }
 
 }
