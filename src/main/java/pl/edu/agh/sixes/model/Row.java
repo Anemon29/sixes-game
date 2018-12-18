@@ -11,15 +11,15 @@ public class Row {
 
     private ObservableList<CardContainer> cardsRow;
 
-    private Optional<Card.Suit> suit;
+    private Card.Suit suit;
 
     public Row(List<CardContainer> cardsRow) {
         this.cardsRow = FXCollections.observableArrayList(cardsRow);
-        this.suit = Optional.empty();
+        this.suit = null;
     }
 
     public Optional<Card.Suit> getSuit() {
-        return suit;
+        return Optional.ofNullable(suit);
     }
 
     public List<CardContainer> getCardsRow() {
@@ -31,10 +31,10 @@ public class Row {
     }
 
     public void bindSuit(Card card){
-        if (suit.isPresent()){
+        if (suit != null){
             throw new IllegalStateException("Suit already binded");
         }
-        this.suit = Optional.of(card.getSuit());
+        this.suit = card.getSuit();
     }
 
 }

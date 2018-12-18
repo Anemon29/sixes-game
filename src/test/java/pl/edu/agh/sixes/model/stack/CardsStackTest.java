@@ -16,7 +16,7 @@ class CardsStackTest {
     private class TestCardsStack extends CardsStack {
 
         public TestCardsStack(List<Card> cards) {
-            super(cards, CardContainer.Place.Deck);
+            super(cards, CardContainer.Place.DECK);
         }
     }
 

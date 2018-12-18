@@ -9,28 +9,18 @@ import java.util.Optional;
 public class CardContainer {
 
     private final Place place;
-    private final Optional<Coordinates> coordinates;
-    private ObjectProperty<Optional<Card>> content;
+    private final Coordinates coordinates;
+    private ObjectProperty<Card> content;
 
     public CardContainer(Place place, Coordinates coordinates, Card card) {
-        this.place = place;
-        this.coordinates = Optional.ofNullable(coordinates);
-        this.content = new SimpleObjectProperty<>(Optional.of(card));
+        this(place, coordinates);
+        this.content = new SimpleObjectProperty<>(card);
     }
 
     public CardContainer(Place place, Coordinates coordinates) {
         this.place = place;
-        this.coordinates = Optional.ofNullable(coordinates);
-        this.content = new SimpleObjectProperty<>(Optional.empty());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || !coordinates.isPresent() || getClass() != o.getClass()) return false;
-        Coordinates coordinates = (Coordinates) o;
-        return this.coordinates.get().rowId == coordinates.rowId &&
-                this.coordinates.get().columnId == coordinates.columnId;
+        this.coordinates = coordinates;
+        this.content = new SimpleObjectProperty<>(null);
     }
 
     public Place getPlace() {
@@ -38,19 +28,19 @@ public class CardContainer {
     }
 
     public Optional<Coordinates> getCoordinates() {
-        return coordinates;
+        return Optional.ofNullable(coordinates);
     }
 
     public Optional<Card> getContent() {
-        return content.getValue();
+        return Optional.ofNullable(content.get());
     }
 
-    public ObjectProperty<Optional<Card>> getContentProperty() {
+    public ObjectProperty<Card> getContentProperty() {
         return content;
     }
 
     public void setContent(Card card) {
-        this.content.set(Optional.ofNullable(card));
+        this.content.set(card);
     }
 
     public Image getCardImage() {
@@ -62,41 +52,9 @@ public class CardContainer {
     }
 
     public enum Place {
-        Deck,
-        Rejected,
-        Field
-    }
-
-    public static class Coordinates {
-
-        private final int rowId;
-        private final int columnId;
-
-        public Coordinates(int rowId, int columnId) {
-            if (rowId < 0 || rowId > 3) {
-                throw new IllegalArgumentException("RowId value must be one of {0,1,2,3}. Actual value: " + rowId);
-            }
-            if (columnId < 0 || columnId > 7) {
-                throw new IllegalArgumentException("ColumnId value must be one of {0,1,2,3,4,5,6,7}. Actual value: " + columnId);
-            }
-            this.rowId = rowId;
-            this.columnId = columnId;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("(%d, %d)", rowId, columnId);
-        }
-
-
-        public int getRowId() {
-            return rowId;
-        }
-
-        public int getColumnId() {
-            return columnId;
-        }
-
+        DECK,
+        REJECTED,
+        FIELD
     }
 
     @Override

@@ -31,6 +31,10 @@ public class BoardController {
 
     private Board board;
 
+    private CardContainer clicked;
+
+    private boolean afterFirstClick = false;
+
     @FXML
     private GridPane boardGrid;
     @FXML
@@ -87,6 +91,11 @@ public class BoardController {
         this.commandRegistry.executeCommand(command);
     }
 
+    private void handlePairClick(CardContainer first, CardContainer second) {
+        Command command = new CommandBuilder(board, first, second).build2();
+        this.commandRegistry.executeCommand(command);
+    }
+
     private ImageView createCard(CardContainer cardContainer) {
         ImageView cardImage = new ImageView(cardContainer.getCardImage());
         cardImage.setFitHeight(120);
@@ -107,8 +116,17 @@ public class BoardController {
                 e -> cardImage.setEffect(null));
 
         cardImage.setOnMouseClicked((MouseEvent e) -> {
-            handelClick(cardContainer);
-            System.out.println(cardContainer.toString());
+            if (afterFirstClick){
+                afterFirstClick = false;
+                handlePairClick(cardContainer, clicked);
+            }
+            else{
+                clicked = cardContainer;
+                afterFirstClick = true;
+            }
+
+            //handelClick(cardContainer);
+            //System.out.println(cardContainer.toString());
         });
         return cardImage;
     }

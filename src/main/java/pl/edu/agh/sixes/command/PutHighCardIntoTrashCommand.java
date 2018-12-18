@@ -18,13 +18,13 @@ public class PutHighCardIntoTrashCommand implements Command {
     public void execute() {
         Card card;
         switch (first.getPlace()) {
-            case Deck:
+            case DECK:
                 card = board.getDeck().pop();
                 break;
-            case Rejected:
+            case REJECTED:
                 card = board.getRejectedCards().pop();
                 break;
-            case Field:
+            case FIELD:
                 if (!first.getContent().isPresent()) {
                     throw new IllegalStateException("Can't push empty fields for now.");
                 }
@@ -32,7 +32,7 @@ public class PutHighCardIntoTrashCommand implements Command {
                 first.setContent(null);
                 break;
             default:
-                throw new IllegalArgumentException("Place must be: Deck or Rejected or Field.");
+                throw new IllegalArgumentException("Place must be: DECK or REJECTED or FIELD.");
         }
         board.getTrash().push(card);
     }
@@ -41,17 +41,17 @@ public class PutHighCardIntoTrashCommand implements Command {
     public void undo() {
         Card card = board.getTrash().pop();
         switch (first.getPlace()) {
-            case Deck:
+            case DECK:
                 board.getDeck().push(card);
                 break;
-            case Rejected:
+            case REJECTED:
                 board.getRejectedCards().push(card);
                 break;
-            case Field:
+            case FIELD:
                 first.setContent(card);
                 break;
             default:
-                throw new IllegalArgumentException("Place must be: Deck or Rejected or Field.");
+                throw new IllegalArgumentException("Place must be: DECK or REJECTED or FIELD.");
         }
     }
 

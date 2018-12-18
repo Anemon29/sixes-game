@@ -2,15 +2,15 @@ package pl.edu.agh.sixes.command;
 
 import pl.edu.agh.sixes.model.Board;
 import pl.edu.agh.sixes.model.Card;
-import pl.edu.agh.sixes.model.CardContainer;
+import pl.edu.agh.sixes.model.Coordinates;
 
 public class MoveToFinalPositionCommand implements Command {
 
     private final Board board;
     private final Card card;
-    private final CardContainer.Coordinates cardCoordinates;
+    private final Coordinates cardCoordinates;
 
-    public MoveToFinalPositionCommand(Board board, Card card, CardContainer.Coordinates cardCoordinates) {
+    public MoveToFinalPositionCommand(Board board, Card card, Coordinates cardCoordinates) {
         this.board = board;
         this.card = card;
         this.cardCoordinates = cardCoordinates;
@@ -39,7 +39,7 @@ public class MoveToFinalPositionCommand implements Command {
         return card;
     }
 
-    public CardContainer.Coordinates getCardCoordinates() {
+    public Coordinates getCardCoordinates() {
         return cardCoordinates;
     }
 

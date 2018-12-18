@@ -12,18 +12,15 @@ import java.util.List;
 
 public abstract class CardsStack {
 
-    private int numberOfCards;
-
     private ObservableList<Card> cards;
 
     private ObjectProperty<CardContainer> container;
 
     protected CardsStack(List<Card> cards, CardContainer.Place place) {
         this.cards = FXCollections.observableArrayList(cards);
-        this.numberOfCards = cards.size();
         CardContainer container;
-        if (numberOfCards > 0) {
-            container = new CardContainer(place, null, cards.get(numberOfCards - 1));
+        if (cards.size() > 0) {
+            container = new CardContainer(place, null, cards.get(cards.size() - 1));
         } else {
             container = new CardContainer(place, null);
         }
@@ -32,32 +29,29 @@ public abstract class CardsStack {
 
     protected CardsStack(CardContainer.Place place) {
         this.cards = FXCollections.observableArrayList();
-        this.numberOfCards = 0;
         CardContainer container = new CardContainer(place, null);
         this.container = new SimpleObjectProperty<>(container);
     }
 
     public void push(Card card){
-        this.cards.add(numberOfCards, card);
-        numberOfCards++;
+        this.cards.add(cards.size(), card);
         setContainerContent(card);
     }
 
     public Card peek() {
-        if (numberOfCards < 1) {
+        if (cards.size() < 1) {
             throw new IndexOutOfBoundsException("Can't peek/pop from empty stack.");
         }
-        return this.cards.get(numberOfCards - 1);
+        return this.cards.get(cards.size() - 1);
     }
 
     public Card pop() {
-        numberOfCards--;
         setContainerContent(peek());
-        return this.cards.remove(numberOfCards);
+        return this.cards.remove(cards.size());
     }
 
     public boolean isEmpty() {
-        return numberOfCards < 1;
+        return cards.size() < 1;
     }
 
     public List<Card> getCards() {

@@ -8,7 +8,7 @@ import java.util.List;
 public class Deck extends CardsStack {
 
     public Deck(List<Card> cards) {
-        super(cards, CardContainer.Place.Deck);
+        super(cards, CardContainer.Place.DECK);
     }
 
 }
