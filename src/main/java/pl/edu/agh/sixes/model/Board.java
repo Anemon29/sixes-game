@@ -6,6 +6,7 @@ import pl.edu.agh.sixes.model.stack.Deck;
 import pl.edu.agh.sixes.model.stack.RejectedCards;
 import pl.edu.agh.sixes.model.stack.Trash;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Board {
@@ -23,7 +24,7 @@ public class Board {
     }
 
     public List<Row> getRows() {
-        return rows;
+        return Collections.unmodifiableList(rows);
     }
 
     public Deck getDeck() {

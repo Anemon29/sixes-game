@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import pl.edu.agh.sixes.command.Command;
 import pl.edu.agh.sixes.command.CommandRegistry;
 import pl.edu.agh.sixes.command.builder.CommandBuilder;
+import pl.edu.agh.sixes.controller.util.ImageProvider;
 import pl.edu.agh.sixes.model.Board;
 import pl.edu.agh.sixes.model.CardContainer;
 import pl.edu.agh.sixes.model.Row;
@@ -34,6 +35,8 @@ public class BoardController {
     private CardContainer clicked;
 
     private boolean afterFirstClick = false;
+
+    private ImageProvider imageProvider;
 
     @FXML
     private GridPane boardGrid;
@@ -55,6 +58,7 @@ public class BoardController {
 
     public void setBoard(Board board) {
         this.board = board;
+        this.imageProvider = new ImageProvider();
         List<Row> rows = board.getRows();
         for (int i = 0; i < 4; i++) {
             ObservableList<CardContainer> row = rows.get(i).getObservableCardsRow();
@@ -97,7 +101,8 @@ public class BoardController {
     }
 
     private ImageView createCard(CardContainer cardContainer) {
-        ImageView cardImage = new ImageView(cardContainer.getCardImage());
+        String imagePath = cardContainer.getCardImagePath();
+        ImageView cardImage = new ImageView(imageProvider.getCardImage(imagePath));
         cardImage.setFitHeight(120);
 //        cardImage.fitHeightProperty().bind(heightProperty());
 

@@ -43,10 +43,9 @@ public class CardContainer {
         this.content.set(card);
     }
 
-    public Image getCardImage() {
-//        System.out.println(getContent());
+    public String getCardImagePath() {
         if (getContent().isPresent()) {
-            return new Image(getClass().getResourceAsStream("/cards/PNG/" + getContent().get().toString() + ".png"));
+            return "/cards/PNG/" + getContent().get().toString() + ".png";
         }
         return null;
     }
