@@ -1,8 +1,7 @@
 package pl.edu.agh.sixes.controller;
 
-
-import javafx.beans.binding.Binding;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 
 import javafx.scene.effect.DropShadow;
@@ -16,18 +15,18 @@ import pl.edu.agh.sixes.command.Command;
 import pl.edu.agh.sixes.command.CommandRegistry;
 import pl.edu.agh.sixes.command.builder.CommandBuilder;
 import pl.edu.agh.sixes.model.Board;
+import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.CardContainer;
 import pl.edu.agh.sixes.model.Row;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BoardController {
 
     private AppController appController;
 
     private CommandRegistry commandRegistry;
-
-    private CardContainer cardContainer;
 
     private Board board;
 
@@ -53,7 +52,7 @@ public class BoardController {
         this.board = board;
         List<Row> rows = board.getRows();
         for (int i = 0; i < 4; i++) {
-            ObservableList<CardContainer> row = rows.get(i).getObservableCardsRow();
+            List<CardContainer> row = rows.get(i).getCardsRow();
             GridPane gridPane = (GridPane) rowsGrid.getChildren().get(i);
             int j = 0;
             for (CardContainer c : row) {
@@ -89,6 +88,13 @@ public class BoardController {
 
     private ImageView createCard(CardContainer cardContainer) {
         ImageView cardImage = new ImageView(cardContainer.getCardImage());
+        cardContainer.getContentProperty().addListener(new ChangeListener<Optional<Card>>() {
+            @Override
+            public void changed(ObservableValue<? extends Optional<Card>> observable, Optional<Card> oldValue, Optional<Card> newValue) {
+                cardImage.setImage(cardContainer.getCardImage());
+            }
+        });
+
         cardImage.setFitHeight(120);
 //        cardImage.fitHeightProperty().bind(heightProperty());
 
@@ -108,7 +114,6 @@ public class BoardController {
 
         cardImage.setOnMouseClicked((MouseEvent e) -> {
             handelClick(cardContainer);
-            System.out.println(cardContainer.toString());
         });
         return cardImage;
     }
