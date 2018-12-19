@@ -1,20 +1,17 @@
 package pl.edu.agh.sixes.model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.util.List;
 import java.util.Optional;
 
 
 public class Row {
 
-    private ObservableList<CardContainer> cardsRow;
+    private List<CardContainer> cardsRow;
 
     private Card.Suit suit;
 
     public Row(List<CardContainer> cardsRow) {
-        this.cardsRow = FXCollections.observableArrayList(cardsRow);
+        this.cardsRow = cardsRow;
         this.suit = null;
     }
 
@@ -23,10 +20,6 @@ public class Row {
     }
 
     public List<CardContainer> getCardsRow() {
-        return cardsRow;
-    }
-
-    public ObservableList<CardContainer> getObservableCardsRow() {
         return cardsRow;
     }
 

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.CardContainer;
+import pl.edu.agh.sixes.model.CardsStack;
 
 import java.util.List;
 import java.util.Optional;

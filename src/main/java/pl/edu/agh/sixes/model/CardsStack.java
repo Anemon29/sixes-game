@@ -1,4 +1,4 @@
-package pl.edu.agh.sixes.model.stack;
+package pl.edu.agh.sixes.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -10,13 +10,13 @@ import pl.edu.agh.sixes.model.CardContainer;
 import java.util.List;
 
 
-public abstract class CardsStack {
+public class CardsStack {
 
     private ObservableList<Card> cards;
 
     private ObjectProperty<CardContainer> container;
 
-    protected CardsStack(List<Card> cards, CardContainer.Place place) {
+    public CardsStack(List<Card> cards, CardContainer.Place place) {
         this.cards = FXCollections.observableArrayList(cards);
         CardContainer container;
         if (cards.size() > 0) {
@@ -27,7 +27,7 @@ public abstract class CardsStack {
         this.container = new SimpleObjectProperty<>(container);
     }
 
-    protected CardsStack(CardContainer.Place place) {
+    public CardsStack(CardContainer.Place place) {
         this.cards = FXCollections.observableArrayList();
         CardContainer container = new CardContainer(place, null);
         this.container = new SimpleObjectProperty<>(container);
@@ -46,8 +46,9 @@ public abstract class CardsStack {
     }
 
     public Card pop() {
+        Card removed =  this.cards.remove(cards.size()-1);
         setContainerContent(peek());
-        return this.cards.remove(cards.size());
+        return removed;
     }
 
     public boolean isEmpty() {

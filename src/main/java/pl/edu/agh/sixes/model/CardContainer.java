@@ -53,7 +53,8 @@ public class CardContainer {
     public enum Place {
         DECK,
         REJECTED,
-        FIELD
+        FIELD,
+        TRASH
     }
 
     @Override

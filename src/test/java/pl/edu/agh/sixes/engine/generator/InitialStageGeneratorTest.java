@@ -5,7 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import pl.edu.agh.sixes.model.stack.Deck;
+import pl.edu.agh.sixes.model.CardContainer;
+import pl.edu.agh.sixes.model.CardsStack;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,7 +29,7 @@ class InitialStageGeneratorTest {
     @Test
     void initializeBoard() {
         //given
-        Deck deck = new Deck(Lists.newLinkedList());
+        CardsStack deck = new CardsStack(Lists.newLinkedList(), CardContainer.Place.DECK);
         when(deckGenerator.initializeDeck()).thenReturn(deck);
         when(rowsGenerator.initializeRows(deck)).thenReturn(Lists.newArrayList());
 

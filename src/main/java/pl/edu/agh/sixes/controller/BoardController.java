@@ -1,8 +1,7 @@
 package pl.edu.agh.sixes.controller;
 
-
-import javafx.beans.binding.Binding;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 
 import javafx.scene.effect.DropShadow;
@@ -17,6 +16,7 @@ import pl.edu.agh.sixes.command.CommandRegistry;
 import pl.edu.agh.sixes.command.builder.CommandBuilder;
 import pl.edu.agh.sixes.controller.util.ImageProvider;
 import pl.edu.agh.sixes.model.Board;
+import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.CardContainer;
 import pl.edu.agh.sixes.model.Row;
 
@@ -61,7 +61,7 @@ public class BoardController {
         this.imageProvider = new ImageProvider();
         List<Row> rows = board.getRows();
         for (int i = 0; i < 4; i++) {
-            ObservableList<CardContainer> row = rows.get(i).getObservableCardsRow();
+            List<CardContainer> row = rows.get(i).getCardsRow();
             GridPane gridPane = (GridPane) rowsGrid.getChildren().get(i);
             int j = 0;
             for (CardContainer c : row) {
@@ -103,6 +103,13 @@ public class BoardController {
     private ImageView createCard(CardContainer cardContainer) {
         String imagePath = cardContainer.getCardImagePath();
         ImageView cardImage = new ImageView(imageProvider.getCardImage(imagePath));
+        cardContainer.getContentProperty().addListener(new ChangeListener<Card>() {
+            @Override
+            public void changed(ObservableValue<? extends Card> observable, Card oldValue, Card newValue) {
+                cardImage.setImage(imageProvider.getCardImage(cardContainer.getCardImagePath()));
+            }
+        });
+
         cardImage.setFitHeight(120);
 //        cardImage.fitHeightProperty().bind(heightProperty());
 
@@ -130,7 +137,7 @@ public class BoardController {
                 afterFirstClick = true;
             }
 
-            //handelClick(cardContainer);
+            handelClick(cardContainer);
             //System.out.println(cardContainer.toString());
         });
         return cardImage;

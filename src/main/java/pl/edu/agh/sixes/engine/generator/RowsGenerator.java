@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.CardContainer;
 import pl.edu.agh.sixes.model.Coordinates;
-import pl.edu.agh.sixes.model.stack.Deck;
+import pl.edu.agh.sixes.model.CardsStack;
 import pl.edu.agh.sixes.model.Row;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class RowsGenerator {
     private static final int NUM_OF_ROWS = 4;
     private static final int CARDS_IN_ROW = 8;
 
-    public List<Row> initializeRows(Deck deck){
+    public List<Row> initializeRows(CardsStack deck){
         List<Row> rowList = Lists.newLinkedList();
         List<Card> deckCards = deck.getCards();
         for (int i = 0; i < NUM_OF_ROWS; i++) {
