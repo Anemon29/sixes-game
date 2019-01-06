@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pl.edu.agh.sixes.model.Card;
-import pl.edu.agh.sixes.model.stack.Deck;
+import pl.edu.agh.sixes.model.CardsStack;
 import pl.edu.agh.sixes.model.Row;
 
 import java.util.List;
@@ -18,7 +18,7 @@ class RowsGeneratorTest {
 
     private static RowsGenerator rowsGenerator;
     @Mock
-    private Deck deck;
+    private CardsStack deck;
 
     @BeforeEach
     void setUp() {

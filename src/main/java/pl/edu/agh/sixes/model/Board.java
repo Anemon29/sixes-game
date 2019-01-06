@@ -2,20 +2,18 @@ package pl.edu.agh.sixes.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import pl.edu.agh.sixes.model.stack.Deck;
-import pl.edu.agh.sixes.model.stack.RejectedCards;
-import pl.edu.agh.sixes.model.stack.Trash;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Board {
 
     private List<Row> rows;
-    private ObjectProperty<Deck> deck;
-    private ObjectProperty<RejectedCards> rejectedCards;
-    private ObjectProperty<Trash> trash;
+    private ObjectProperty<CardsStack> deck;
+    private ObjectProperty<CardsStack> rejectedCards;
+    private ObjectProperty<CardsStack> trash;
 
-    public Board(List<Row> rows, Deck deck, RejectedCards rejectedCards, Trash trash) {
+    public Board(List<Row> rows, CardsStack deck, CardsStack rejectedCards, CardsStack trash) {
         this.rows = rows;
         this.deck = new SimpleObjectProperty<>(deck);
         this.rejectedCards = new SimpleObjectProperty<>(rejectedCards);
@@ -23,30 +21,30 @@ public class Board {
     }
 
     public List<Row> getRows() {
-        return rows;
+        return Collections.unmodifiableList(rows);
     }
 
-    public Deck getDeck() {
+    public CardsStack getDeck() {
         return deck.get();
     }
 
-    public RejectedCards getRejectedCards() {
+    public CardsStack getRejectedCards() {
         return rejectedCards.get();
     }
 
-    public Trash getTrash() {
+    public CardsStack getTrash() {
         return trash.get();
     }
 
-    public ObjectProperty<Deck> getDeckProperty() {
+    public ObjectProperty<CardsStack> getDeckProperty() {
         return deck;
     }
 
-    public ObjectProperty<RejectedCards> getRejectedCardsProperty() {
+    public ObjectProperty<CardsStack> getRejectedCardsProperty() {
         return rejectedCards;
     }
 
-    public ObjectProperty<Trash> getTrashProperty() {
+    public ObjectProperty<CardsStack> getTrashProperty() {
         return trash;
     }
 }

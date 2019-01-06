@@ -1,8 +1,7 @@
 package pl.edu.agh.sixes.controller;
 
-
-import javafx.beans.binding.Binding;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 
 import javafx.scene.effect.DropShadow;
@@ -15,7 +14,9 @@ import javafx.scene.shape.Rectangle;
 import pl.edu.agh.sixes.command.Command;
 import pl.edu.agh.sixes.command.CommandRegistry;
 import pl.edu.agh.sixes.command.builder.CommandBuilder;
+import pl.edu.agh.sixes.controller.util.ImageProvider;
 import pl.edu.agh.sixes.model.Board;
+import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.CardContainer;
 import pl.edu.agh.sixes.model.Row;
 
@@ -30,6 +31,12 @@ public class BoardController {
     private CardContainer cardContainer;
 
     private Board board;
+
+    private CardContainer clicked;
+
+    private boolean afterFirstClick = false;
+
+    private ImageProvider imageProvider;
 
     @FXML
     private GridPane boardGrid;
@@ -51,9 +58,10 @@ public class BoardController {
 
     public void setBoard(Board board) {
         this.board = board;
+        this.imageProvider = new ImageProvider();
         List<Row> rows = board.getRows();
         for (int i = 0; i < 4; i++) {
-            ObservableList<CardContainer> row = rows.get(i).getObservableCardsRow();
+            List<CardContainer> row = rows.get(i).getCardsRow();
             GridPane gridPane = (GridPane) rowsGrid.getChildren().get(i);
             int j = 0;
             for (CardContainer c : row) {
@@ -87,8 +95,21 @@ public class BoardController {
         this.commandRegistry.executeCommand(command);
     }
 
+    private void handlePairClick(CardContainer first, CardContainer second) {
+        Command command = new CommandBuilder(board, first, second).build2();
+        this.commandRegistry.executeCommand(command);
+    }
+
     private ImageView createCard(CardContainer cardContainer) {
-        ImageView cardImage = new ImageView(cardContainer.getCardImage());
+        String imagePath = cardContainer.getCardImagePath();
+        ImageView cardImage = new ImageView(imageProvider.getCardImage(imagePath));
+        cardContainer.getContentProperty().addListener(new ChangeListener<Card>() {
+            @Override
+            public void changed(ObservableValue<? extends Card> observable, Card oldValue, Card newValue) {
+                cardImage.setImage(imageProvider.getCardImage(cardContainer.getCardImagePath()));
+            }
+        });
+
         cardImage.setFitHeight(120);
 //        cardImage.fitHeightProperty().bind(heightProperty());
 
@@ -107,8 +128,17 @@ public class BoardController {
                 e -> cardImage.setEffect(null));
 
         cardImage.setOnMouseClicked((MouseEvent e) -> {
+            if (afterFirstClick){
+                afterFirstClick = false;
+                handlePairClick(cardContainer, clicked);
+            }
+            else{
+                clicked = cardContainer;
+                afterFirstClick = true;
+            }
+
             handelClick(cardContainer);
-            System.out.println(cardContainer.toString());
+            //System.out.println(cardContainer.toString());
         });
         return cardImage;
     }

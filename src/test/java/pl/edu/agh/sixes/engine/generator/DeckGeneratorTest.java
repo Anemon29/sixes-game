@@ -3,7 +3,7 @@ package pl.edu.agh.sixes.engine.generator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.edu.agh.sixes.model.Card;
-import pl.edu.agh.sixes.model.stack.Deck;
+import pl.edu.agh.sixes.model.CardsStack;
 
 import java.util.Random;
 
@@ -23,7 +23,7 @@ class DeckGeneratorTest {
         //given
 
         //when
-        Deck deck = deckGenerator.initializeDeck();
+        CardsStack deck = deckGenerator.initializeDeck();
 
         //then
         assertEquals(104, deck.getCards().size());
@@ -32,7 +32,7 @@ class DeckGeneratorTest {
     @Test
     void duplicatesTest(){
         //given
-        Deck deck = deckGenerator.initializeDeck();
+        CardsStack deck = deckGenerator.initializeDeck();
 
         //when
         for (int i = 0; i < 5; i++) {
