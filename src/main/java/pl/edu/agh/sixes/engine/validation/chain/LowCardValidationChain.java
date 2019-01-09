@@ -2,7 +2,7 @@ package pl.edu.agh.sixes.engine.validation.chain;
 
 import pl.edu.agh.sixes.model.CardContainer;
 
-public class LowCardValidationChain {
+public class LowCardValidationChain implements ValidationChain{
     private final DefaultValidationChain defaultValidationChain;
 
     public LowCardValidationChain() {

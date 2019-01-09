@@ -2,7 +2,7 @@ package pl.edu.agh.sixes.engine.validation.chain;
 
 import pl.edu.agh.sixes.model.CardContainer;
 
-public class DefaultValidationChain {
+public class DefaultValidationChain implements ValidationChain{
 
     public boolean validate(CardContainer first, CardContainer second){
         if (first.getContent().equals(second.getContent())) {
