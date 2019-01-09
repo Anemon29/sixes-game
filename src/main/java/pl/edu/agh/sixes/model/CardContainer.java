@@ -4,6 +4,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class CardContainer {
@@ -59,7 +60,7 @@ public class CardContainer {
 
     @Override
     public String toString() {
-        return place.toString() + ":" + coordinates.toString() + " " + content.toString();
+        return place.toString() + ":" + (Objects.isNull(coordinates) ? "null" : coordinates.toString()) + " " + content.toString();
     }
 
 

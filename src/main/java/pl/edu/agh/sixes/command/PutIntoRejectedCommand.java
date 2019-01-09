@@ -1,29 +1,26 @@
 package pl.edu.agh.sixes.command;
 
 import pl.edu.agh.sixes.model.Board;
-import pl.edu.agh.sixes.model.CardContainer;
 
 public class PutIntoRejectedCommand implements Command {
     private final Board board;
-    private final CardContainer first;
 
-    public PutIntoRejectedCommand(Board board, CardContainer first) {
+    public PutIntoRejectedCommand(Board board) {
         this.board = board;
-        this.first = first;
     }
 
     @Override
     public void execute() {
-
+        board.getRejectedCards().push(board.getDeck().pop());
     }
 
     @Override
     public void undo() {
-
+        board.getDeck().push(board.getRejectedCards().pop());
     }
 
     @Override
     public void redo() {
-
+        execute();
     }
 }

@@ -47,7 +47,11 @@ public class CardsStack {
 
     public Card pop() {
         Card removed =  this.cards.remove(cards.size()-1);
-        setContainerContent(peek());
+        if (cards.size() == 0) {
+            setContainerContent(null);
+        } else {
+            setContainerContent(peek());
+        }
         return removed;
     }
 

@@ -17,17 +17,31 @@ public class MoveToFinalPositionCommand implements Command {
 
     @Override
     public void execute() {
-
+        if (second.getContent().isPresent()) {
+            throw new IllegalStateException("Final position is not empty.");
+        }
+        if (first.getContent().isPresent()) {
+            second.setContent(first.getContent().get());
+        } else {
+            throw new IllegalStateException("Move empty container to final position.");
+        }
     }
 
     @Override
     public void undo() {
-
+        if (first.getContent().isPresent()) {
+            throw new IllegalStateException("Critical error. Undo final position not empty.");
+        }
+        if (second.getContent().isPresent()) {
+            first.setContent(second.getContent().get());
+        } else {
+            throw new IllegalStateException("Move empty container to final position.");
+        }
     }
 
     @Override
     public void redo() {
-
+        execute();
     }
 
 }
