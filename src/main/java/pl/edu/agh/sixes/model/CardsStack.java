@@ -40,12 +40,15 @@ public class CardsStack {
 
     public Card peek() {
         if (cards.size() < 1) {
-            throw new IndexOutOfBoundsException("Can't peek/pop from empty stack.");
+            return null;
         }
         return this.cards.get(cards.size() - 1);
     }
 
     public Card pop() {
+        if (cards.size() < 1) {
+            throw new IndexOutOfBoundsException("Can't peek/pop from empty stack.");
+        }
         Card removed =  this.cards.remove(cards.size()-1);
         setContainerContent(peek());
         return removed;
