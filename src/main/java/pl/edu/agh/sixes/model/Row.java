@@ -1,6 +1,7 @@
 package pl.edu.agh.sixes.model;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +15,12 @@ public class Row {
 
     public Row(List<CardContainer> cardsRow) {
         this.cardsRow = cardsRow;
-        this.suit = null;
+        this.suit = new SimpleObjectProperty<>(null);
     }
 
     public Optional<Card.Suit> getSuit() {
-        return Optional.ofNullable(suit.get());
+        Card.Suit s = suit.get();
+        return Optional.ofNullable(s);
     }
 
     public ObjectProperty<Card.Suit> suitProperty() {
@@ -29,11 +31,18 @@ public class Row {
         return cardsRow;
     }
 
-    public void bindSuit(Card card){
-        if (suit != null){
-            throw new IllegalStateException("Suit already binded");
+    public boolean bindSuit(Card card){
+        if (suit.get() == null){
+            this.suit.set(card.getSuit());
+            return true;
         }
-        this.suit.set(card.getSuit());
+        return false;
+    }
+
+    public void unbindSuit(){
+        if (suit.get() != null){
+            this.suit.set(null);
+        }
     }
 
 }

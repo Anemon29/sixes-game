@@ -10,12 +10,14 @@ public class MoveToFinalPositionCommand implements Command {
     private final CardContainer first;
     private final CardContainer second;
     private final MoveToFinalPositionValidationChain validationChain;
+    private boolean isBindingMove;
 
     public MoveToFinalPositionCommand(Board board, CardContainer first, CardContainer second) {
         this.board = board;
         this.first = first;
         this.second = second;
         this.validationChain = new MoveToFinalPositionValidationChain();
+        this.isBindingMove = false;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class MoveToFinalPositionCommand implements Command {
             if (validationChain.validate(board, first, second)) {
                 second.setContent(first.getContent().get());
                 first.setContent(null);
+                isBindingMove = board.getRows().get(second.getCoordinates().get().getRowId()).bindSuit(second.getContent().get());
             }
         } else {
             throw new IllegalStateException("Move empty container to final position.");
@@ -41,6 +44,9 @@ public class MoveToFinalPositionCommand implements Command {
         if (second.getContent().isPresent()) {
             first.setContent(second.getContent().get());
             second.setContent(null);
+            if (isBindingMove) {
+                board.getRows().get(second.getCoordinates().get().getRowId()).unbindSuit();
+            }
         } else {
             throw new IllegalStateException("Move empty container to final position.");
         }
