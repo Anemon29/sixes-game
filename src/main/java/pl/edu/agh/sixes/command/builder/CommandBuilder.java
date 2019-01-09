@@ -91,7 +91,7 @@ public class CommandBuilder {
             throw new IllegalArgumentException("DECK can't be empty.");
         }
         if (configuration.getCards().equals(ClickedConfiguration.Cards.DIFFERENT)) {
-            return new PutIntoRejectedCommand(board, first);
+            return new PutIntoRejectedCommand(board);
         } else {
             return handleSameCards();
         }
