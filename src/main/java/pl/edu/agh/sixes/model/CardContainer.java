@@ -3,6 +3,7 @@ package pl.edu.agh.sixes.model;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class CardContainer {
@@ -58,7 +59,7 @@ public class CardContainer {
 
     @Override
     public String toString() {
-        return place.toString() + ":" + coordinates.toString() + " " + content.toString();
+        return place.toString() + ":" + (Objects.isNull(coordinates) ? "null" : coordinates.toString()) + " " + content.toString();
     }
 
 

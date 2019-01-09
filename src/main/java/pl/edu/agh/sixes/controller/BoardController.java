@@ -19,7 +19,10 @@ import pl.edu.agh.sixes.command.Command;
 import pl.edu.agh.sixes.command.CommandRegistry;
 import pl.edu.agh.sixes.command.builder.CommandBuilder;
 import pl.edu.agh.sixes.controller.util.ImageProvider;
-import pl.edu.agh.sixes.model.*;
+import pl.edu.agh.sixes.model.Board;
+import pl.edu.agh.sixes.model.Card;
+import pl.edu.agh.sixes.model.CardContainer;
+import pl.edu.agh.sixes.model.Row;
 
 import java.util.List;
 
@@ -117,8 +120,12 @@ public class BoardController {
     }
 
     private void handlePairClick(CardContainer first, CardContainer second) {
-        Command command = new CommandBuilder(board, first, second).build2();
-        this.commandRegistry.executeCommand(command);
+        try {
+            Command command = new CommandBuilder(board, first, second).build();
+            this.commandRegistry.executeCommand(command);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private ImageView prepareCard(Image image) {
@@ -150,29 +157,25 @@ public class BoardController {
         highlightShadow.setColor(Color.color(1, 0, 0));
         highlightShadow.setRadius(5.0);
 //Adding the shadow when the mouse cursor is on
-
         cardImage.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                e -> {
-//                    if(!clicked.equals(cardContainer)){
-                    cardImage.setEffect(shadow);
-//                    }
-                });
+                e -> cardImage.setEffect(shadow));
 //Removing the shadow when the mouse cursor is off
         cardImage.addEventHandler(MouseEvent.MOUSE_EXITED,
-                e -> {
-//                    if(!clicked.equals(cardContainer)){
-                    cardImage.setEffect(null);
-//                    }
-                });
+                e -> cardImage.setEffect(null));
 
         cardImage.setOnMouseClicked((MouseEvent e) -> {
-            if (afterFirstClick) {
+            if (afterFirstClick){
                 afterFirstClick = false;
-                handlePairClick(cardContainer, clicked);
-            } else {
+                if (!cardContainer.equals(clicked)) {
+                    handlePairClick(clicked, cardContainer);
+                }
+            }
+            else{
                 clicked = cardContainer;
                 afterFirstClick = true;
             }
+
+            //System.out.println(cardContainer.toString());
         });
         return cardImage;
     }

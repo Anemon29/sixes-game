@@ -50,7 +50,11 @@ public class CardsStack {
             throw new IndexOutOfBoundsException("Can't peek/pop from empty stack.");
         }
         Card removed =  this.cards.remove(cards.size()-1);
-        setContainerContent(peek());
+        if (cards.size() == 0) {
+            setContainerContent(null);
+        } else {
+            setContainerContent(peek());
+        }
         return removed;
     }
 
