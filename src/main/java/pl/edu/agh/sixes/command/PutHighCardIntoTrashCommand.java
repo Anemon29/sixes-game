@@ -1,5 +1,6 @@
 package pl.edu.agh.sixes.command;
 
+import pl.edu.agh.sixes.engine.validation.chain.HighCardValidationChain;
 import pl.edu.agh.sixes.model.Board;
 import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.CardContainer;
@@ -7,15 +8,27 @@ import pl.edu.agh.sixes.model.CardContainer;
 public class PutHighCardIntoTrashCommand implements Command {
 
     private final Board board;
-    private final CardContainer first;
+    private  CardContainer first;
+    private  CardContainer second;
+    private final HighCardValidationChain validationChain;
 
-    public PutHighCardIntoTrashCommand(Board board, CardContainer first) {
+    public PutHighCardIntoTrashCommand(Board board, CardContainer first, CardContainer second) {
         this.board = board;
         this.first = first;
+        this.second = second;
+        this.validationChain = new HighCardValidationChain();
     }
 
     @Override
     public void execute() {
+        HighCardValidationChain.Result res = validationChain.validate(board, first, second);
+        if (res.equals(HighCardValidationChain.Result.NONE))
+            return;
+        if (res.equals(HighCardValidationChain.Result.FIRST)){
+            CardContainer temp = first;
+            first = second;
+            second = temp;
+        }
         Card card;
         switch (first.getPlace()) {
             case DECK:
