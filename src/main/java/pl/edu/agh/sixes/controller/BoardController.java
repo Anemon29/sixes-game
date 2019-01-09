@@ -1,11 +1,13 @@
 package pl.edu.agh.sixes.controller;
 
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,8 +24,10 @@ import pl.edu.agh.sixes.controller.util.ImageProvider;
 import pl.edu.agh.sixes.model.Board;
 import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.CardContainer;
+import pl.edu.agh.sixes.model.CardsStack;
 import pl.edu.agh.sixes.model.Row;
 
+import java.awt.*;
 import java.util.List;
 
 public class BoardController {
@@ -52,7 +56,7 @@ public class BoardController {
     @FXML
     private void initialize() {
         for (int i = 0; i < 4; i++) {
-            GridPane emptySlots = createRow();
+            GridPane emptySlots = createRow(8);
             for (int j = 0; j < 8; j++) {
                 emptySlots.add(new Rectangle(80, 122), j, 0);
             }
@@ -63,12 +67,13 @@ public class BoardController {
         }
     }
 
-    private GridPane createRow() {
+    private GridPane createRow(int size) {
         GridPane emptySlots = new GridPane();
         emptySlots.setStyle("-fx-alignment: center");
-        for (int j = 0; j < 8; j++) {
+        int witdh = 100 / size;
+        for (int j = 0; j < size; j++) {
             ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(12.5);
+            column.setPercentWidth(witdh);
             emptySlots.getColumnConstraints().add(column);
         }
         return emptySlots;
@@ -98,7 +103,7 @@ public class BoardController {
 
 // deck initalization
         StackPane stackpane = (StackPane) decksGrid.getChildren().get(0);
-        ObservableList deckList = stackpane.getChildren();
+        ObservableList<Node> deckList = stackpane.getChildren();
         ObservableList<Card> deck = board.getDeck().getObservableCards();
         for (int i = 0; i < deck.size() - 1; i++) {
             ImageView back = prepareCard(imageProvider.getCardBack());
@@ -115,7 +120,32 @@ public class BoardController {
 
         // initilize trash
         StackPane stackpane2 = (StackPane) decksGrid.getChildren().get(2);
-        initilizeStackCount(board.getTrash(),stackpane2.getChildren());
+        ObservableList<Node> trashList = stackpane2.getChildren();
+        board.getTrash().getObservableCards().addListener((ListChangeListener<Card>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    ImageView back = prepareCard(imageProvider.getCardBack());
+                    setMarginOnLastCard(back, trashList.size());
+                    trashList.add(back);
+                }
+                if (c.wasRemoved()) {
+                    trashList.remove(trashList.size() - 1);
+                }
+            }
+        });
+
+        GridPane buttonsPane = createRow(2);
+        Button forwardButton = new Button("Forward");
+//        forwardButton.setGraphic(new ImageView(imageProvider.getForwardButtonImage()));
+        forwardButton.setOnAction((ActionEvent e) -> commandRegistry.redo());
+
+        Button reverseButton = new Button("Revers");
+//        forwardButton.setGraphic(new ImageView(imageProvider.getReversButtonImage()));
+        reverseButton.setOnAction((ActionEvent e) -> commandRegistry.undo());
+
+        buttonsPane.add(reverseButton, 0, 0);
+        buttonsPane.add(forwardButton, 1, 0);
+        decksGrid.add(buttonsPane, 0, 3);
 
     }
 
@@ -145,12 +175,10 @@ public class BoardController {
 
     private ImageView createCard(CardContainer cardContainer) {
         ImageView cardImage = prepareCard(imageProvider.getCardImage(cardContainer));
-        cardContainer.getContentProperty().addListener(new ChangeListener<Card>() {
-            @Override
-            public void changed(ObservableValue<? extends Card> observable, Card oldValue, Card newValue) {
-                cardImage.setImage(imageProvider.getCardImage(cardContainer));
-            }
-        });
+        cardContainer.getContentProperty()
+                .addListener((ObservableValue<? extends Card> observable, Card oldValue, Card newValue) ->
+                        cardImage.setImage(imageProvider.getCardImage(cardContainer))
+                );
 
         DropShadow shadow = new DropShadow();
         DropShadow highlightShadow = new DropShadow();
@@ -164,13 +192,12 @@ public class BoardController {
                 e -> cardImage.setEffect(null));
 
         cardImage.setOnMouseClicked((MouseEvent e) -> {
-            if (afterFirstClick){
+            if (afterFirstClick) {
                 afterFirstClick = false;
                 if (!cardContainer.equals(clicked)) {
                     handlePairClick(clicked, cardContainer);
                 }
-            }
-            else{
+            } else {
                 clicked = cardContainer;
                 afterFirstClick = true;
             }
@@ -180,14 +207,10 @@ public class BoardController {
         return cardImage;
     }
 
-    private void initilizaStack(CardsStack cardsStack, ObservableList list) {
+    private void initilizaStack(CardsStack cardsStack, ObservableList<Node> list) {
         ImageView topCard = createCard(cardsStack.getContainer());
         setMarginOnLastCard(topCard, list.size());
         list.add(topCard);
-        initilizeStackCount(cardsStack, list);
-    }
-
-    private void initilizeStackCount(CardsStack cardsStack, ObservableList list) {
         cardsStack.getObservableCards().addListener((ListChangeListener<Card>) c -> {
             while (c.next()) {
                 ImageView cover = (ImageView) list.get(list.size() - 1);

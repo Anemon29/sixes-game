@@ -43,13 +43,6 @@ public class CardContainer {
         this.content.set(card);
     }
 
-    public String getCardImagePath() {
-        if (getContent().isPresent()) {
-            return "/cards/PNG/" + getContent().get().toString() + ".png";
-        }
-        return null;
-    }
-
     public enum Place {
         DECK,
         REJECTED,
