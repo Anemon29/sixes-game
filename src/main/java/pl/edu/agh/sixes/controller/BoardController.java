@@ -90,14 +90,13 @@ public class BoardController {
         return emptySlots;
     }
 
-    private void handelClick(CardContainer cardContainer) {
-        Command command = new CommandBuilder(board, cardContainer).build();
-        this.commandRegistry.executeCommand(command);
-    }
-
     private void handlePairClick(CardContainer first, CardContainer second) {
-        Command command = new CommandBuilder(board, first, second).build2();
-        this.commandRegistry.executeCommand(command);
+        try {
+            Command command = new CommandBuilder(board, first, second).build();
+            this.commandRegistry.executeCommand(command);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private ImageView createCard(CardContainer cardContainer) {
@@ -130,14 +129,15 @@ public class BoardController {
         cardImage.setOnMouseClicked((MouseEvent e) -> {
             if (afterFirstClick){
                 afterFirstClick = false;
-                handlePairClick(cardContainer, clicked);
+                if (!cardContainer.equals(clicked)) {
+                    handlePairClick(clicked, cardContainer);
+                }
             }
             else{
                 clicked = cardContainer;
                 afterFirstClick = true;
             }
 
-            handelClick(cardContainer);
             //System.out.println(cardContainer.toString());
         });
         return cardImage;
