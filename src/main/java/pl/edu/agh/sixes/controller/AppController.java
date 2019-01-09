@@ -1,13 +1,8 @@
 package pl.edu.agh.sixes.controller;
 
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pl.edu.agh.sixes.command.CommandRegistry;
 import pl.edu.agh.sixes.engine.generator.DeckGenerator;
@@ -36,8 +31,9 @@ public class AppController {
             // load layout from FXML file
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/BoardPane.fxml"));
+
             GridPane rootLayout = loader.load();
-            rootLayout.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+//            rootLayout.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
             InitialStageGenerator initialStageGenerator = new InitialStageGenerator(new DeckGenerator(), new RowsGenerator());
             // set initial data into controller
             BoardController controller = loader.getController();
@@ -46,6 +42,7 @@ public class AppController {
             controller.setBoard(initialStageGenerator.initializeBoard());
             // add layout to a scene and show them all
             Scene scene = new Scene(rootLayout);
+            scene.getStylesheets().addAll(getClass().getResource("/style.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
 
