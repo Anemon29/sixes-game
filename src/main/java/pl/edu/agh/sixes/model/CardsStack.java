@@ -14,7 +14,7 @@ public class CardsStack {
 
     private ObservableList<Card> cards;
 
-    private ObjectProperty<CardContainer> container;
+    private CardContainer container;
 
     public CardsStack(List<Card> cards, CardContainer.Place place) {
         this.cards = FXCollections.observableArrayList(cards);
@@ -24,13 +24,12 @@ public class CardsStack {
         } else {
             container = new CardContainer(place, null);
         }
-        this.container = new SimpleObjectProperty<>(container);
+        this.container = container;
     }
 
     public CardsStack(CardContainer.Place place) {
         this.cards = FXCollections.observableArrayList();
-        CardContainer container = new CardContainer(place, null);
-        this.container = new SimpleObjectProperty<>(container);
+        this.container = new CardContainer(place, null);
     }
 
     public void push(Card card){
@@ -71,10 +70,6 @@ public class CardsStack {
     }
 
     public CardContainer getContainer() {
-        return container.getValue();
-    }
-
-    public ObjectProperty<CardContainer> getContainerProperty() {
         return container;
     }
 

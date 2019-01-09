@@ -28,9 +28,10 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="100" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="231.0" minHeight="10.0" percentHeight="33.3" prefHeight="143.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="231.0" minHeight="10.0" percentHeight="33.3" prefHeight="143.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="231.0" minHeight="10.0" percentHeight="33.3" prefHeight="143.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="231.0" minHeight="10.0" percentHeight="30.0" prefHeight="143.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="231.0" minHeight="10.0" percentHeight="30.0" prefHeight="143.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="231.0" minHeight="10.0" percentHeight="30.0" prefHeight="143.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="231.0" minHeight="10.0" percentHeight="10.0" prefHeight="143.0" vgrow="SOMETIMES" />
         </rowConstraints>
     </GridPane>
 </GridPane>
