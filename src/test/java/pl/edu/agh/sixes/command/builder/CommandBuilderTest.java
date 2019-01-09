@@ -39,6 +39,7 @@ class CommandBuilderTest {
     @ParameterizedTest
     @MethodSource("argumentsProvider")
     void build(CardContainer.Place firstPlace, Rank firstRank, CardContainer.Place secondPlace, Rank secondRank, Cards cards, Class expectedCommand) {
+        //given
         Board board = initializeBoard();
         Pair<CardContainer, CardContainer> containers = new Builder()
                 .withFirstPlace(firstPlace)
@@ -50,7 +51,10 @@ class CommandBuilderTest {
         CommandBuilder commandBuilder = new CommandBuilder(board, containers.getKey(), containers.getValue());
         Command command = null;
         try {
+            //when
             command = commandBuilder.build();
+
+            //then
         } catch (Exception e) {
             if (!expectedCommand.equals(Exception.class)) {
                 fail(e);
