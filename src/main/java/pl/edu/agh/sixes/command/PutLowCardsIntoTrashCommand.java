@@ -29,7 +29,7 @@ public class PutLowCardsIntoTrashCommand implements Command {
             System.out.println("two same cards chosen");
         }
         else {
-            System.out.println("two cards chosen");
+            throw new IllegalArgumentException("Cards aren't the same, can't remove them");
         }
     }
 

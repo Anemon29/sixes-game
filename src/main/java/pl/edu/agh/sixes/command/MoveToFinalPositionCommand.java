@@ -31,6 +31,9 @@ public class MoveToFinalPositionCommand implements Command {
                 first.setContent(null);
                 isBindingMove = board.getRows().get(second.getCoordinates().get().getRowId()).bindSuit(second.getContent().get());
             }
+            else {
+                throw new IllegalArgumentException("Field binded to another rank or another suit");
+            }
         } else {
             throw new IllegalStateException("Move empty container to final position.");
         }

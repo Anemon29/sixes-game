@@ -32,6 +32,7 @@ public class TakeFromRejectedCommand implements Command {
         }
         Card card = second.getContent().get();
         board.getRejectedCards().push(card);
+        second.setContent(null);
     }
 
     @Override
