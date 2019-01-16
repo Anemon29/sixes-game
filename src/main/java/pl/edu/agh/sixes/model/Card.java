@@ -25,6 +25,20 @@ public class Card {
         public boolean isLow() {
             return isLow;
         }
+
+        public static Card.Rank convertColumnId(int id){
+            switch (id) {
+                case 0: return Card.Rank.SIX;
+                case 1: return Card.Rank.SEVEN;
+                case 2: return Card.Rank.EIGHT;
+                case 3: return Card.Rank.NINE;
+                case 4: return Card.Rank.TEN;
+                case 5: return Card.Rank.JACK;
+                case 6: return Card.Rank.QUEEN;
+                case 7: return Card.Rank.KING;
+                default: return null;
+            }
+        }
     }
 
     public enum Suit {

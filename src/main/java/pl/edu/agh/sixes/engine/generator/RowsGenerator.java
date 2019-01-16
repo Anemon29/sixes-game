@@ -16,11 +16,10 @@ public class RowsGenerator {
 
     public List<Row> initializeRows(CardsStack deck){
         List<Row> rowList = Lists.newLinkedList();
-        List<Card> deckCards = deck.getCards();
         for (int i = 0; i < NUM_OF_ROWS; i++) {
             List<CardContainer> row = Lists.newLinkedList();
             for (int j = 0; j < CARDS_IN_ROW; j++) {
-                Card top = deckCards.remove(deckCards.size() - 1);
+                Card top = deck.pop();
                 CardContainer container = new CardContainer(CardContainer.Place.FIELD, new Coordinates(i, j), top);
                 row.add(container);
             }

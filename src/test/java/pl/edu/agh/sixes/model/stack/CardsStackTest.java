@@ -68,11 +68,11 @@ class CardsStackTest {
 
         //when
         int numberOfCards = emptyStack.getCards().size();
-        Supplier<Card> peekReference = emptyStack::peek;
+        Card card = emptyStack.peek();
 
         //then
         assertEquals(0, numberOfCards);
-        assertThrows(IndexOutOfBoundsException.class, peekReference::get);
+        assertNull(card);
     }
 
     @Test

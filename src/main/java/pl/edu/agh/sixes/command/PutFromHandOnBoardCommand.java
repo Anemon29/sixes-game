@@ -32,6 +32,7 @@ public class PutFromHandOnBoardCommand implements Command {
         }
         Card card = second.getContent().get();
         board.getDeck().push(card);
+        second.setContent(null);
     }
 
     @Override

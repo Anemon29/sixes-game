@@ -5,3 +5,7 @@
 #rowsGrid {
     -fx-alignment: center;
 }
+
+#row {
+    -fx-alignment: center
+}

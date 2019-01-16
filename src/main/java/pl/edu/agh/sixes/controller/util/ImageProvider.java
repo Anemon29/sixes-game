@@ -1,33 +1,28 @@
 package pl.edu.agh.sixes.controller.util;
 
 import javafx.scene.image.Image;
-import pl.edu.agh.sixes.model.CardContainer;
-
-import java.util.Objects;
+import pl.edu.agh.sixes.model.Card;
 
 public class ImageProvider {
 
-    public Image getCardImage(CardContainer cardContainer){
+    public Image getCardImage(Card card) {
         String imagePath;
-        if (cardContainer.getContent().isPresent()) {
-            imagePath = "/cards/PNG/" + cardContainer.getContent().get().toString() + ".png";
-            }
-        else {
-            imagePath="/cards/PNG/empty.png";
+        if (card == null) {
+            imagePath = "/cards/PNG/empty.png";
+        } else {
+            imagePath = "/cards/PNG/" + card.toString() + ".png";
         }
         return new Image(getClass().getResourceAsStream(imagePath));
     }
 
-    public Image getCardBack(){
+    public Image getCardBack() {
         return new Image(getClass().getResourceAsStream("/cards/PNG/purple_back.png"));
     }
-    public Image getForwardButtonImage(){
-        return new Image(getClass().getResourceAsStream("/buttons/forward_button.png"));
+
+    public Image getSuitImage(Card.Suit suit) {
+        if(suit == null){
+            return null;
+        }
+        return new Image(getClass().getResourceAsStream("/suits/" + suit + ".png"));
     }
-    public Image getReversButtonImage(){
-        return new Image(getClass().getResourceAsStream("/buttons/revers_button.png"));
-    }
-
-
-
 }
