@@ -61,7 +61,7 @@ public class PutHighCardIntoTrashCommand implements Command {
                 board.getRejectedCards().push(card);
                 break;
             case FIELD:
-                first.setContent(card);
+                second.setContent(card);
                 break;
             default:
                 throw new IllegalArgumentException("Cannot undo this move");

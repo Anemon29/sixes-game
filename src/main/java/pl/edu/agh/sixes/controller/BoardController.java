@@ -1,5 +1,7 @@
 package pl.edu.agh.sixes.controller;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -27,7 +29,6 @@ import pl.edu.agh.sixes.model.CardContainer;
 import pl.edu.agh.sixes.model.CardsStack;
 import pl.edu.agh.sixes.model.Row;
 
-import java.awt.*;
 import java.util.List;
 
 public class BoardController {
@@ -36,48 +37,16 @@ public class BoardController {
 
     private CommandRegistry commandRegistry;
 
-    private CardContainer cardContainer;
-
     private Board board;
 
-    private CardContainer clicked;
-
-    private boolean afterFirstClick = false;
+    private ObjectProperty<CardContainer> clicked;
 
     private ImageProvider imageProvider;
 
     @FXML
-    private GridPane boardGrid;
-    @FXML
     private GridPane rowsGrid;
     @FXML
     private GridPane decksGrid;
-
-    @FXML
-    private void initialize() {
-        for (int i = 0; i < 4; i++) {
-            GridPane emptySlots = createRow(8);
-            for (int j = 0; j < 8; j++) {
-                emptySlots.add(new Rectangle(80, 122), j, 0);
-            }
-            rowsGrid.add(emptySlots, 0, i);
-        }
-        for (int i = 0; i < 3; i++) {
-            decksGrid.add(new StackPane(), 0, i);
-        }
-    }
-
-    private GridPane createRow(int size) {
-        GridPane emptySlots = new GridPane();
-        emptySlots.setStyle("-fx-alignment: center");
-        int witdh = 100 / size;
-        for (int j = 0; j < size; j++) {
-            ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(witdh);
-            emptySlots.getColumnConstraints().add(column);
-        }
-        return emptySlots;
-    }
 
     public void setAppController(AppController appController) {
         this.appController = appController;
@@ -90,124 +59,42 @@ public class BoardController {
     public void setBoard(Board board) {
         this.board = board;
         this.imageProvider = new ImageProvider();
-        List<Row> rows = board.getRows();
+
+        initializeRows();
+        initializeDeck();
+        initializeRejected();
+        initializeTrash();
+        addButtons();
+    }
+
+    private CardContainer getClicked() {
+        return clicked.get();
+    }
+
+    private ObjectProperty<CardContainer> clickedProperty() {
+        return clicked;
+    }
+
+    private void setClicked(CardContainer clicked) {
+        this.clicked.set(clicked);
+    }
+
+    @FXML
+    private void initialize() {
+        this.clicked = new SimpleObjectProperty<>(null);
         for (int i = 0; i < 4; i++) {
-            List<CardContainer> row = rows.get(i).getCardsRow();
-            GridPane gridPane = (GridPane) rowsGrid.getChildren().get(i);
-            int j = 0;
-            for (CardContainer c : row) {
-                gridPane.add(createCard(c), j, 0);
-                j++;
+            GridPane emptySlots = createRow(8);
+            for (int j = 0; j < 8; j++) {
+                emptySlots.add(new Rectangle(80, 122), j, 0);
             }
+            rowsGrid.add(emptySlots, 0, i);
         }
-
-// deck initalization
-        StackPane stackpane = (StackPane) decksGrid.getChildren().get(0);
-        ObservableList<Node> deckList = stackpane.getChildren();
-        ObservableList<Card> deck = board.getDeck().getObservableCards();
-        for (int i = 0; i < deck.size() - 1; i++) {
-            ImageView back = prepareCard(imageProvider.getCardBack());
-            StackPane.setMargin(back, new Insets(0, 0, i, i));
-            deckList.add(back);
-        }
-
-        initilizaStack(board.getDeck(), deckList);
-
-        // intilize rejected
-        StackPane stackpane1 = (StackPane) decksGrid.getChildren().get(1);
-        initilizaStack(board.getRejectedCards(), stackpane1.getChildren());
-
-
-        // initilize trash
-        StackPane stackpane2 = (StackPane) decksGrid.getChildren().get(2);
-        ObservableList<Node> trashList = stackpane2.getChildren();
-        board.getTrash().getObservableCards().addListener((ListChangeListener<Card>) c -> {
-            while (c.next()) {
-                if (c.wasAdded()) {
-                    ImageView back = prepareCard(imageProvider.getCardBack());
-                    setMarginOnLastCard(back, trashList.size());
-                    trashList.add(back);
-                }
-                if (c.wasRemoved()) {
-                    trashList.remove(trashList.size() - 1);
-                }
-            }
-        });
-
-        GridPane buttonsPane = createRow(2);
-        Button forwardButton = new Button("Forward");
-//        forwardButton.setGraphic(new ImageView(imageProvider.getForwardButtonImage()));
-        forwardButton.setOnAction((ActionEvent e) -> commandRegistry.redo());
-
-        Button reverseButton = new Button("Revers");
-//        forwardButton.setGraphic(new ImageView(imageProvider.getReversButtonImage()));
-        reverseButton.setOnAction((ActionEvent e) -> commandRegistry.undo());
-
-        buttonsPane.add(reverseButton, 0, 0);
-        buttonsPane.add(forwardButton, 1, 0);
-        decksGrid.add(buttonsPane, 0, 3);
-
-    }
-
-    private void handlePairClick(CardContainer first, CardContainer second) {
-        try {
-            Command command = new CommandBuilder(board, first, second).build();
-            this.commandRegistry.executeCommand(command);
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (int i = 0; i < 3; i++) {
+            decksGrid.add(new StackPane(), 0, i);
         }
     }
 
-    private ImageView prepareCard(Image image) {
-        ImageView cardImage = new ImageView(image);
-        cardImage.setFitHeight(120);
-//        cardImage.fitHeightProperty().bind(heightProperty());
-
-        cardImage.setPreserveRatio(true);
-        cardImage.setSmooth(true);
-        cardImage.setPickOnBounds(true);
-        return cardImage;
-    }
-
-    private void setMarginOnLastCard(ImageView lastCard, int listSize) {
-        StackPane.setMargin(lastCard, new Insets(0, 0, listSize - 1, listSize - 1));
-    }
-
-    private ImageView createCard(CardContainer cardContainer) {
-        ImageView cardImage = prepareCard(imageProvider.getCardImage(cardContainer));
-        cardContainer.getContentProperty()
-                .addListener((ObservableValue<? extends Card> observable, Card oldValue, Card newValue) ->
-                        cardImage.setImage(imageProvider.getCardImage(cardContainer))
-                );
-
-        DropShadow shadow = new DropShadow();
-        DropShadow highlightShadow = new DropShadow();
-        highlightShadow.setColor(Color.color(1, 0, 0));
-        highlightShadow.setRadius(5.0);
-//Adding the shadow when the mouse cursor is on
-        cardImage.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                e -> cardImage.setEffect(shadow));
-//Removing the shadow when the mouse cursor is off
-        cardImage.addEventHandler(MouseEvent.MOUSE_EXITED,
-                e -> cardImage.setEffect(null));
-
-        cardImage.setOnMouseClicked((MouseEvent e) -> {
-            if (afterFirstClick) {
-                afterFirstClick = false;
-                if (!cardContainer.equals(clicked)) {
-                    handlePairClick(clicked, cardContainer);
-                }
-            } else {
-                clicked = cardContainer;
-                afterFirstClick = true;
-            }
-
-            //System.out.println(cardContainer.toString());
-        });
-        return cardImage;
-    }
-
-    private void initilizaStack(CardsStack cardsStack, ObservableList<Node> list) {
+    private void initializeStack(CardsStack cardsStack, ObservableList<Node> list) {
         ImageView topCard = createCard(cardsStack.getContainer());
         setMarginOnLastCard(topCard, list.size());
         list.add(topCard);
@@ -229,4 +116,183 @@ public class BoardController {
             }
         });
     }
+
+    private void initializeRows() {
+        List<Row> rows = board.getRows();
+        for (int i = 0; i < 4; i++) {
+            Row row = rows.get(i);
+            List<CardContainer> cardsRow = row.getCardsRow();
+            GridPane gridPane = (GridPane) rowsGrid.getChildren().get(i);
+            int j = 0;
+            for (CardContainer c : cardsRow) {
+                ImageView colorImage = prepareSuit();
+                row.suitProperty()
+                        .addListener(
+                                (ObservableValue<? extends Card.Suit> observable,
+                                 Card.Suit oldValue,
+                                 Card.Suit newValue) -> colorImage.setImage(imageProvider.getSuitImage(newValue))
+                        );
+                gridPane.add(colorImage, j, 0);
+                gridPane.add(createCard(c), j, 0);
+                j++;
+            }
+        }
+    }
+
+    private void initializeDeck() {
+        ObservableList<Card> deck = board.getDeck().getObservableCards();
+        StackPane stackpane = (StackPane) decksGrid.getChildren().get(0);
+        ObservableList<Node> deckList = stackpane.getChildren();
+        for (int i = 0; i < deck.size() - 1; i++) {
+            ImageView back = prepareCard(imageProvider.getCardBack());
+            StackPane.setMargin(back, new Insets(0, 0, i, i));
+            deckList.add(back);
+        }
+
+        initializeStack(board.getDeck(), deckList);
+    }
+
+    private void initializeRejected() {
+        StackPane stackpane1 = (StackPane) decksGrid.getChildren().get(1);
+        initializeStack(board.getRejectedCards(), stackpane1.getChildren());
+    }
+
+    private void initializeTrash() {
+        StackPane stackpane = (StackPane) decksGrid.getChildren().get(2);
+        ObservableList<Node> trashList = stackpane.getChildren();
+        board.getTrash().getObservableCards()
+                .addListener((ListChangeListener<Card>) c ->
+                {
+                    while (c.next()) {
+                        if (c.wasAdded()) {
+                            ImageView back = prepareCard(imageProvider.getCardBack());
+                            setMarginOnLastCard(back, trashList.size());
+                            trashList.add(back);
+                        }
+                        if (c.wasRemoved()) {
+                            trashList.remove(trashList.size() - 1);
+                        }
+                    }
+                });
+    }
+
+    private void addButtons() {
+        GridPane buttonsPane = createRow(2);
+        Button forwardButton = new Button("Forward");
+        forwardButton.setOnAction((
+                ActionEvent e) -> commandRegistry.redo());
+        DropShadow shadow = new DropShadow();
+        forwardButton.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                e -> forwardButton.setEffect(shadow));
+        //Removing the shadow when the mouse cursor is off
+        forwardButton.addEventHandler(MouseEvent.MOUSE_EXITED,
+                e -> forwardButton.setEffect(null));
+
+        Button reverseButton = new Button("Revers");
+        reverseButton.setOnAction((
+                ActionEvent e) -> commandRegistry.undo());
+        reverseButton.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                e -> reverseButton.setEffect(shadow));
+        //Removing the shadow when the mouse cursor is off
+        reverseButton.addEventHandler(MouseEvent.MOUSE_EXITED,
+                e -> reverseButton.setEffect(null));
+        buttonsPane.add(reverseButton, 0, 0);
+        buttonsPane.add(forwardButton, 1, 0);
+        decksGrid.add(buttonsPane, 0, 3);
+    }
+
+    private GridPane createRow(int size) {
+        GridPane emptySlots = new GridPane();
+        emptySlots.setStyle("-fx-alignment: center");
+        int witdh = 100 / size;
+        for (int j = 0; j < size; j++) {
+            ColumnConstraints column = new ColumnConstraints();
+            column.setPercentWidth(witdh);
+            emptySlots.getColumnConstraints().add(column);
+        }
+        return emptySlots;
+    }
+
+    private ImageView prepareCard(Image image) {
+        ImageView cardImage = new ImageView(image);
+        cardImage.setFitHeight(120);
+//        cardImage.fitHeightProperty().bind(heightProperty());
+        return prepareImage(cardImage);
+    }
+
+    private ImageView prepareSuit() {
+        ImageView colorImage = prepareImage(new ImageView());
+        colorImage.setFitWidth(68);
+        colorImage.setId("suit");
+        return colorImage;
+    }
+
+    private ImageView prepareImage(ImageView imageView) {
+        imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
+        imageView.setPickOnBounds(true);
+        return imageView;
+    }
+
+    private void handleClick(CardContainer cardContainer) {
+        if (getClicked() != null) {
+            if (!cardContainer.equals(getClicked())) {
+                try {
+                    Command command = new CommandBuilder(board, getClicked(), cardContainer).build();
+                    this.commandRegistry.executeCommand(command);
+                    setClicked(null);
+                } catch (Exception err) {
+                    setClicked(cardContainer);
+                    err.printStackTrace();
+                }
+            }
+        } else {
+            setClicked(cardContainer);
+        }
+    }
+
+    private ImageView createCard(CardContainer cardContainer) {
+        Card card = null;
+        if (cardContainer.getContent().isPresent()) {
+            card = cardContainer.getContent().get();
+        }
+        ImageView cardImage = prepareCard(imageProvider.getCardImage(card));
+        cardContainer.getContentProperty()
+                .addListener((ObservableValue<? extends Card> observable, Card oldValue, Card newValue) ->
+                        cardImage.setImage(imageProvider.getCardImage(newValue))
+                );
+        DropShadow highlightShadow = new DropShadow();
+        highlightShadow.setColor(Color.web("0x00f9ff"));
+        highlightShadow.setRadius(20.0);
+
+        clickedProperty()
+                .addListener((ObservableValue<? extends CardContainer> observable,
+                              CardContainer oldValue,
+                              CardContainer newValue) -> {
+                    if (cardContainer.equals(newValue)) {
+                        cardImage.setEffect(highlightShadow);
+                    } else if (cardContainer.equals(oldValue)) {
+                        cardImage.setEffect(null);
+                    }
+                });
+
+        DropShadow shadow = new DropShadow();
+        //Adding the shadow when the mouse cursor is on
+        cardImage.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                e -> {
+                    if (!cardContainer.equals(getClicked())) cardImage.setEffect(shadow);
+                });
+        //Removing the shadow when the mouse cursor is off
+        cardImage.addEventHandler(MouseEvent.MOUSE_EXITED,
+                e -> {
+                    if (!cardContainer.equals(getClicked())) cardImage.setEffect(null);
+                });
+        cardImage.setOnMouseClicked((MouseEvent e) -> handleClick(cardContainer));
+        return cardImage;
+    }
+
+    private void setMarginOnLastCard(ImageView lastCard, int listSize) {
+        StackPane.setMargin(lastCard, new Insets(0, 0, listSize - 1, listSize - 1));
+    }
+
 }
