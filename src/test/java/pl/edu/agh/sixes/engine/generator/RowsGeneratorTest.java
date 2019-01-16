@@ -30,7 +30,7 @@ class RowsGeneratorTest {
     void initializeRowsTest() {
         //given
         List<Card> cards = Lists.newLinkedList();
-        for (int i = 0; i < 104; i++) {
+        for (int i = 0; i < 72; i++) {
             cards.add(new Card(Card.Rank.ACE, Card.Suit.HEARTS));
         }
 
@@ -40,7 +40,6 @@ class RowsGeneratorTest {
         List<Row> rows = rowsGenerator.initializeRows(deck);
 
         //then
-        verify(deck, times(1)).getCards();
         assertEquals(4, rows.size());
         assertEquals(8, rows.get(2).getCardsRow().size());
         assertEquals(104 - 32, deck.getCards().size());
