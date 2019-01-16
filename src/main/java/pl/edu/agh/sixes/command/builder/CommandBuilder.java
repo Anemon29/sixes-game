@@ -170,7 +170,7 @@ public class CommandBuilder {
         if (configuration.getFirstRank().equals(ClickedConfiguration.Rank.LOW)) {
             return new PutLowCardsIntoTrashCommand(board, first, second);
         } else {
-            return new PutHighCardIntoTrashCommand(board, first, second);
+            return new PutHighCardIntoTrashCommand(board, second);
         }
     }
 
