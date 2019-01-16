@@ -85,7 +85,9 @@ public class BoardController {
         for (int i = 0; i < 4; i++) {
             GridPane emptySlots = createRow(8);
             for (int j = 0; j < 8; j++) {
-                emptySlots.add(new Rectangle(80, 122), j, 0);
+                StackPane stackPane = new StackPane();
+                stackPane.getChildren().add(new Rectangle(80, 122));
+                emptySlots.add(stackPane, j, 0);
             }
             rowsGrid.add(emptySlots, 0, i);
         }
@@ -125,6 +127,7 @@ public class BoardController {
             GridPane gridPane = (GridPane) rowsGrid.getChildren().get(i);
             int j = 0;
             for (CardContainer c : cardsRow) {
+                StackPane cardPlace = (StackPane) gridPane.getChildren().get(j);
                 ImageView colorImage = prepareSuit();
                 row.suitProperty()
                         .addListener(
@@ -132,8 +135,7 @@ public class BoardController {
                                  Card.Suit oldValue,
                                  Card.Suit newValue) -> colorImage.setImage(imageProvider.getSuitImage(newValue))
                         );
-                gridPane.add(colorImage, j, 0);
-                gridPane.add(createCard(c), j, 0);
+                cardPlace.getChildren().addAll(colorImage, createCard(c));
                 j++;
             }
         }
@@ -203,11 +205,11 @@ public class BoardController {
 
     private GridPane createRow(int size) {
         GridPane emptySlots = new GridPane();
-        emptySlots.setStyle("-fx-alignment: center");
-        int witdh = 100 / size;
+        emptySlots.setId("row");
+        int width = 100 / size;
         for (int j = 0; j < size; j++) {
             ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(witdh);
+            column.setPercentWidth(width);
             emptySlots.getColumnConstraints().add(column);
         }
         return emptySlots;
@@ -290,6 +292,47 @@ public class BoardController {
         cardImage.setOnMouseClicked((MouseEvent e) -> handleClick(cardContainer));
         return cardImage;
     }
+
+    private ImageView createSuit(CardContainer cardContainer) {
+        Card card = null;
+        if (cardContainer.getContent().isPresent()) {
+            card = cardContainer.getContent().get();
+        }
+        ImageView cardImage = prepareCard(imageProvider.getCardImage(card));
+        cardContainer.getContentProperty()
+                .addListener((ObservableValue<? extends Card> observable, Card oldValue, Card newValue) ->
+                        cardImage.setImage(imageProvider.getCardImage(newValue))
+                );
+        DropShadow highlightShadow = new DropShadow();
+        highlightShadow.setColor(Color.web("0x00f9ff"));
+        highlightShadow.setRadius(20.0);
+
+        clickedProperty()
+                .addListener((ObservableValue<? extends CardContainer> observable,
+                              CardContainer oldValue,
+                              CardContainer newValue) -> {
+                    if (cardContainer.equals(newValue)) {
+                        cardImage.setEffect(highlightShadow);
+                    } else if (cardContainer.equals(oldValue)) {
+                        cardImage.setEffect(null);
+                    }
+                });
+
+        DropShadow shadow = new DropShadow();
+        //Adding the shadow when the mouse cursor is on
+        cardImage.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                e -> {
+                    if (!cardContainer.equals(getClicked())) cardImage.setEffect(shadow);
+                });
+        //Removing the shadow when the mouse cursor is off
+        cardImage.addEventHandler(MouseEvent.MOUSE_EXITED,
+                e -> {
+                    if (!cardContainer.equals(getClicked())) cardImage.setEffect(null);
+                });
+        cardImage.setOnMouseClicked((MouseEvent e) -> handleClick(cardContainer));
+        return cardImage;
+    }
+
 
     private void setMarginOnLastCard(ImageView lastCard, int listSize) {
         StackPane.setMargin(lastCard, new Insets(0, 0, listSize - 1, listSize - 1));

@@ -5,6 +5,7 @@
 #rowsGrid {
     -fx-alignment: center;
 }
-#suit {
-    /*-fx-scale-x: 10px;*/
+
+#row {
+    -fx-alignment: center
 }
