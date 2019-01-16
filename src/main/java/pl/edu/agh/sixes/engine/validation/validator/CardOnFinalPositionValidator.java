@@ -15,8 +15,6 @@ public class CardOnFinalPositionValidator {
                 Row row = board.getRows().get(firstRowId);
                 if (row.getSuit().isPresent()) {
                     return first.getContent().get().getSuit().equals(row.getSuit().get());
-                } else {
-                    return true;
                 }
             }
         }
