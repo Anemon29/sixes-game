@@ -26,7 +26,6 @@ public class PutLowCardsIntoTrashCommand implements Command {
             Card card2 = throwOutCard(second);
             board.getTrash().push(card1);
             board.getTrash().push(card2);
-            System.out.println("two same cards chosen");
         }
         else {
             throw new IllegalArgumentException("Cards aren't the same, can't remove them");
