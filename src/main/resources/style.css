@@ -1,0 +1,11 @@
+#boardGrid {
+    -fx-background-color: green;
+}
+
+#rowsGrid {
+    -fx-alignment: center;
+}
+
+#row {
+    -fx-alignment: center
+}
