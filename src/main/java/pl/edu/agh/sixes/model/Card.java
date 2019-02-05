@@ -5,14 +5,40 @@ import java.util.Objects;
 
 public class Card {
 
-    private Rank rank;
-    private Suit suit;
+    private final Rank rank;
+    private final Suit suit;
 
     private static final String[] RANK_CODES = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
     private static final String[] SUIT_CODES = {"C", "D", "H", "S"};
 
     public enum Rank {
-        TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
+        TWO(true), THREE(true), FOUR(true), FIVE(true),
+        SIX(false), SEVEN(false), EIGHT(false), NINE(false), TEN(false), JACK(false), QUEEN(false), KING(false),
+        ACE(true);
+
+        private final boolean isLow;
+
+        Rank(boolean isLow) {
+            this.isLow = isLow;
+        }
+
+        public boolean isLow() {
+            return isLow;
+        }
+
+        public static Card.Rank convertColumnId(int id){
+            switch (id) {
+                case 0: return Card.Rank.SIX;
+                case 1: return Card.Rank.SEVEN;
+                case 2: return Card.Rank.EIGHT;
+                case 3: return Card.Rank.NINE;
+                case 4: return Card.Rank.TEN;
+                case 5: return Card.Rank.JACK;
+                case 6: return Card.Rank.QUEEN;
+                case 7: return Card.Rank.KING;
+                default: return null;
+            }
+        }
     }
 
     public enum Suit {
@@ -32,6 +58,10 @@ public class Card {
 
     public Suit getSuit() {
         return suit;
+    }
+
+    public boolean isLow() {
+        return rank.isLow;
     }
 
     @Override

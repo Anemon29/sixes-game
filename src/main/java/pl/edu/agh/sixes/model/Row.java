@@ -1,7 +1,7 @@
 package pl.edu.agh.sixes.model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,16 +9,21 @@ import java.util.Optional;
 
 public class Row {
 
-    private ObservableList<CardContainer> cardsRow;
+    private List<CardContainer> cardsRow;
 
-    private Optional<Card.Suit> suit;
+    private ObjectProperty<Card.Suit> suit;
 
     public Row(List<CardContainer> cardsRow) {
-        this.cardsRow = FXCollections.observableArrayList(cardsRow);
-        this.suit = Optional.empty();
+        this.cardsRow = cardsRow;
+        this.suit = new SimpleObjectProperty<>(null);
     }
 
     public Optional<Card.Suit> getSuit() {
+        Card.Suit s = suit.get();
+        return Optional.ofNullable(s);
+    }
+
+    public ObjectProperty<Card.Suit> suitProperty() {
         return suit;
     }
 
@@ -26,15 +31,18 @@ public class Row {
         return cardsRow;
     }
 
-    public ObservableList<CardContainer> getObservableCardsRow() {
-        return cardsRow;
+    public boolean bindSuit(Card card){
+        if (suit.get() == null){
+            this.suit.set(card.getSuit());
+            return true;
+        }
+        return false;
     }
 
-    public void bindSuit(Card card){
-        if (suit.isPresent()){
-            throw new IllegalStateException("Suit already binded");
+    public void unbindSuit(){
+        if (suit.get() != null){
+            this.suit.set(null);
         }
-        this.suit = Optional.of(card.getSuit());
     }
 
 }
