@@ -4,9 +4,7 @@ import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 import pl.edu.agh.sixes.model.Card;
 import pl.edu.agh.sixes.model.CardContainer;
-import pl.edu.agh.sixes.model.CardsStack;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -17,8 +15,8 @@ class CardsStackTest {
 
     private class TestCardsStack extends CardsStack {
 
-        TestCardsStack(List<Card> cards) {
-            super(cards, CardContainer.Place.DECK);
+        public TestCardsStack(List<Card> cards) {
+            super(cards, CardContainer.Place.Deck);
         }
     }
 
@@ -68,11 +66,11 @@ class CardsStackTest {
 
         //when
         int numberOfCards = emptyStack.getCards().size();
-        Card card = emptyStack.peek();
+        Supplier<Card> peekReference = emptyStack::peek;
 
         //then
         assertEquals(0, numberOfCards);
-        assertNull(card);
+        assertThrows(IndexOutOfBoundsException.class, peekReference::get);
     }
 
     @Test
@@ -82,25 +80,6 @@ class CardsStackTest {
         int oldSize = stack.getCards().size();
         Card properTop = new Card(Card.Rank.FOUR, Card.Suit.HEARTS);
         Optional<Card> expectedCardFromContainer = Optional.of(new Card(Card.Rank.THREE, Card.Suit.HEARTS));
-
-        //when
-        Card top = stack.pop();
-        int newSize = stack.getCards().size();
-        Optional<Card> newCardFromContainer = stack.getContainer().getContent();
-
-        //then
-        assertEquals(properTop, top);
-        assertEquals(oldSize - 1, newSize);
-        assertEquals(expectedCardFromContainer, newCardFromContainer);
-    }
-
-    @Test
-    void popFromOneElementTest() {
-        //given
-        TestCardsStack stack = initializeOneElementStack();
-        int oldSize = stack.getCards().size();
-        Card properTop = new Card(Card.Rank.TWO, Card.Suit.HEARTS);
-        Optional<Card> expectedCardFromContainer = Optional.empty();
 
         //when
         Card top = stack.pop();
@@ -145,12 +124,6 @@ class CardsStackTest {
         cards.add(new Card(Card.Rank.TWO, Card.Suit.HEARTS));
         cards.add(new Card(Card.Rank.THREE, Card.Suit.HEARTS));
         cards.add(new Card(Card.Rank.FOUR, Card.Suit.HEARTS));
-        return new TestCardsStack(cards);
-    }
-
-    private TestCardsStack initializeOneElementStack() {
-        List<Card> cards = Lists.newLinkedList();
-        cards.add(new Card(Card.Rank.TWO, Card.Suit.HEARTS));
         return new TestCardsStack(cards);
     }
 
